@@ -8,12 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdb.data.local.AppDatabase
 import com.example.roomdb.data.repository.UserRepository
-import com.example.roomdb.presentation.screen.home.HomeScreen
-import com.example.roomdb.presentation.screen.home.HomeViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdb.presentation.navigation.AppNavGraph
+import com.example.roomdb.presentation.screen.home.HomeViewModel
 import com.example.roomdb.presentation.screen.home.HomeViewModelFactory
 import com.example.roomdb.ui.theme.RoomDBTheme
 

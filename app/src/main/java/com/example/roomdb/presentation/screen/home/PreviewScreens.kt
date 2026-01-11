@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -21,22 +22,19 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -65,7 +64,7 @@ import com.example.roomdb.data.local.entity.User
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "Dash Board Screen", showSystemUi = true)
 @Composable
-private fun prevDashboardScreen(
+private fun PrevDashboardScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -222,7 +221,7 @@ private fun prevDashboardScreen(
 
 @Preview(name = "User Details Screen", showBackground = true,)
 @Composable
-private fun prevUserDetailScreen() {
+private fun PrevUserDetailScreen() {
     Column(
         modifier = Modifier.fillMaxSize().background(color = Color.LightGray),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -298,6 +297,7 @@ private fun prevUserDetailScreen() {
                 Text(text = "Marwadi University")
             }
         }
+
         Row(
             modifier = Modifier
                 .padding(8.dp)
@@ -311,6 +311,8 @@ private fun prevUserDetailScreen() {
             }
         }
 
+        ProfileItem(Icons.Default.Person, "Name", "Tejas")
+
         Spacer(modifier = Modifier.height(8.dp))
 
         ElevatedButton(
@@ -319,5 +321,51 @@ private fun prevUserDetailScreen() {
             Text(text = "Back To Main Screen")
         }
 
+    }
+}
+
+@Composable
+fun ProfileItem(icon: ImageVector, label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Absolute.Center
+    ) {
+        Icon(
+            icon,
+            contentDescription = null,
+            modifier = Modifier
+        )
+        Spacer(modifier = Modifier.width(32.dp))
+        Column {
+            Text(text = label, fontWeight = FontWeight.SemiBold)
+            Text(text = value, color = Color.Gray)
+        }
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        
+    ) {
+        Icon(Icons.Filled.Email,
+            "email",
+            modifier = Modifier.padding(8.dp)
+        )
+        Column() {
+            Text(
+                text = "Email",
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Text(
+                text = "Tejas@gmail.com",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
     }
 }
