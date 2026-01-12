@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
@@ -58,6 +59,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
 
@@ -135,7 +137,7 @@ private fun PrevDashboardScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable {}
+                            .clickable { /* do something */}
                         ,
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         shape = RoundedCornerShape(corner = CornerSize(16.dp))
@@ -144,8 +146,8 @@ private fun PrevDashboardScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            ) {
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Image(
                                 painter = painterResource(R.drawable.profilepic),
                                 contentDescription = "profile Image",
@@ -154,12 +156,11 @@ private fun PrevDashboardScreen(
                                     .size(48.dp)
                                     .clip(CircleShape)
                                     .border(2.dp, Color.DarkGray, CircleShape)
-
                             )
 
                             Column(
                                 modifier = Modifier
-                                    .fillMaxSize()
+                                    .fillMaxHeight()
                                     .padding(start = 8.dp),
                                 verticalArrangement = Arrangement.SpaceEvenly
                             ) {
@@ -168,14 +169,25 @@ private fun PrevDashboardScreen(
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier
-                                        .fillMaxSize()
                                         .padding(bottom = 2.dp)
                                 )
 
                                 Text(
                                     text = user.email,
                                     fontFamily = FontFamily.Cursive,
-                                    modifier = Modifier.fillMaxSize()
+                                    modifier = Modifier
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            IconButton(
+                                modifier = Modifier,
+                                onClick = {  }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Delete,
+                                    contentDescription = "Delete"
                                 )
                             }
                         }

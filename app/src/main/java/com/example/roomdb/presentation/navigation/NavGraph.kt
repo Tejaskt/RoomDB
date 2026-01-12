@@ -6,10 +6,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.roomdb.presentation.screen.addUser.AddUserScreen
+import com.example.roomdb.presentation.screen.addEditUser.AddUserScreen
+import com.example.roomdb.presentation.screen.addEditUser.EditUserScreen
 import com.example.roomdb.presentation.screen.dashboard.DashboardScreen
-import com.example.roomdb.presentation.screen.detail.UserDetailScreen
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
+import com.example.roomdb.presentation.screen.detail.UserDetailScreen
 
 @Composable
 fun AppNavGraph (
@@ -29,6 +30,9 @@ fun AppNavGraph (
                 },
                 onUserClick = { userId ->
                     navController.navigate("${Routes.USER_DETAIL}/$userId")
+                },
+                onEditUserClick = { userId ->
+                    navController.navigate("${Routes.EDIT_USER}/$userId")
                 }
             )
         }
@@ -49,6 +53,19 @@ fun AppNavGraph (
                 viewModel = viewmodel,
                 userId = userId,
                 onBack = {navController.popBackStack()}
+            )
+        }
+        composable(
+            route = "${Routes.EDIT_USER}/{userId}",
+            arguments = listOf(
+                navArgument("userId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getInt("userId")!!
+            EditUserScreen(
+                viewModel = viewmodel,
+                userId = userId,
+                onBack = { navController.popBackStack() }
             )
         }
     }

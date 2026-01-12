@@ -12,6 +12,7 @@ room = "2.6.1"
 ksp = "2.0.21-1.0.25"
 foundationLayout = "1.10.0"
 navigationCompose = "2.7.7"
+runtime = "1.10.0"
 
 
 [libraries]
@@ -35,6 +36,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 androidx-navigation-compose = {group = "androidx.navigation",name = "navigation-compose",version.ref = "navigationCompose"}
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

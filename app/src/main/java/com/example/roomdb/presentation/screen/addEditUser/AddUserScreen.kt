@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.addUser
+package com.example.roomdb.presentation.screen.addEditUser
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -41,7 +42,7 @@ import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 @Composable
 fun AddUserScreen(
     viewModel: DashboardViewModel,
-    onBack:() -> Unit
+    onBack: () -> Unit
 ) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -56,18 +57,25 @@ fun AddUserScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         ) {
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
-                "Back",
-                modifier = Modifier.padding(horizontal = 10.dp).size(26.dp)
+            IconButton(
+                onClick = onBack,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .size(26.dp),
+                content = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "BackArrow"
+                    )
+                },
             )
+
             Text(
                 text = "Add User",
                 style = MaterialTheme.typography.titleLarge,
@@ -75,29 +83,21 @@ fun AddUserScreen(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center
-
             )
         }
 
         Spacer(modifier = Modifier.height(22.dp))
-
         Image(
             painter = painterResource(R.drawable.profilepic),
             contentDescription = "Profile Image",
             contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(120.dp)
+            modifier = Modifier.clip(CircleShape).size(120.dp)
                 .border(4.dp, Color(0xFF54787c), CircleShape)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer (modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text("Name") }
-        )
+        OutlinedTextField (value = name, onValueChange = { name = it }, label = { Text("Name") })
         OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
         OutlinedTextField(value = age, onValueChange = { age = it }, label = { Text("Age") })
         OutlinedTextField(value = college, onValueChange = { college = it }, label = { Text("College") })
@@ -107,23 +107,16 @@ fun AddUserScreen(
 
         ElevatedButton(
             onClick = {
-
                 if (
                     name.isNotBlank() &&
                     email.isNotBlank() &&
                     age.isNotBlank() &&
                     college.isNotBlank() &&
-                    stream.isNotBlank()
-                ) {
-                    viewModel.addUser(
-                        name,
-                        email,
-                        age.toInt(),
-                        college,
-                        stream
-                    )
+                    stream.isNotBlank())
+                {
+                    viewModel.addUser( name = name, email = email, age = age.toInt(), collage = college, stream = stream )
+                    onBack ()
                 }
-                onBack()
             }
         ) {
             Text(
@@ -132,6 +125,5 @@ fun AddUserScreen(
                 fontFamily = FontFamily.SansSerif
             )
         }
-
     }
 }

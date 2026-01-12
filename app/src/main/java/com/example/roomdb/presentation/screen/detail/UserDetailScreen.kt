@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +44,7 @@ import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 fun UserDetailScreen(
     viewModel: DashboardViewModel,
     userId: Int,
-    onBack:() -> Unit
+    onBack: () -> Unit
 ) {
     val users by viewModel.users.collectAsState()
     val user = users.find { it.id == userId }
@@ -72,11 +73,6 @@ fun UserDetailScreen(
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center
 
-                )
-                Icon(
-                    Icons.Filled.Edit,
-                    "Edit Profile",
-                    modifier = Modifier.padding(8.dp)
                 )
             }
 

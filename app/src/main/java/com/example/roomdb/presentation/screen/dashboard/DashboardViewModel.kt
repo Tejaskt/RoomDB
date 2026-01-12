@@ -4,22 +4,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class DashboardViewModel (
     private val repository: UserRepository
 ) : ViewModel(){
 
-    private val _users = MutableStateFlow<List<User>>(emptyList())
-    val users : StateFlow<List<User>> = _users
+    val users: StateFlow<List<User>> =
+        repository.users
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
 
-    fun loadUsers(){
-        viewModelScope.launch {
-            _users.value = repository.getAllUsers()
-        }
-    }
+    fun getUserById(userId : Int): StateFlow<User?> =
+        repository.getUserById(userId)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000),null)
 
     fun addUser(
         name : String,
@@ -34,10 +39,14 @@ class DashboardViewModel (
                     name = name, email = email, age = age, collage = collage, stream = stream
                 )
             )
-            loadUsers()
         }
     }
 
+    fun updateUser(user: User){
+        viewModelScope.launch {
+            repository.updateUser(user)
+        }
+    }
     fun deleteUser(user : User){
         viewModelScope.launch {
             repository.deleteUser(user)

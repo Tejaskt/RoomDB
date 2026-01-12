@@ -4,4 +4,5 @@ object Routes {
     const val DASHBOARD = "dashboard"
     const val ADD_USER = "add_user"
     const val USER_DETAIL = "user_detail"
+    const val EDIT_USER = "edit_user"
 }

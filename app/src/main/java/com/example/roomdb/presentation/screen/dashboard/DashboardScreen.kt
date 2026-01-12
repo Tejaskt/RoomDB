@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,7 +37,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -56,13 +58,10 @@ import com.example.roomdb.R
 fun DashboardScreen(
     viewModel: DashboardViewModel,
     onAddClick: () -> Unit,
-    onUserClick: (Int)-> Unit
+    onUserClick: (Int)-> Unit,
+    onEditUserClick: (Int) -> Unit
 ){
     val users by viewModel.users.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.loadUsers()
-    }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -112,7 +111,6 @@ fun DashboardScreen(
 
     ) { padding ->
 
-        // ScrollContent(padding)
         LazyColumn(
             modifier = Modifier.padding(padding).background(color = Color.LightGray).fillMaxHeight()) {
             items(users) { user ->
@@ -123,13 +121,14 @@ fun DashboardScreen(
                             .clickable { onUserClick(user.id) },
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         shape = RoundedCornerShape(corner = CornerSize(16.dp))
-                    ) {
+                ) {
                     Row(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+
                         Image(
                                 painter = painterResource(R.drawable.profilepic),
                                 contentDescription = "profile Image",
@@ -139,9 +138,9 @@ fun DashboardScreen(
                                     .clip(CircleShape)
                                     .border(2.dp, Color.DarkGray, CircleShape)
                             )
+
                         Column(
                                 modifier = Modifier
-                                    .fillMaxSize()
                                     .padding(start = 8.dp),
                                 verticalArrangement = Arrangement.SpaceEvenly
                             ) {
@@ -150,17 +149,37 @@ fun DashboardScreen(
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier
-                                        .fillMaxSize()
                                         .padding(bottom = 2.dp)
                                 )
                             Text(
                                     text = user.email,
-                                    fontFamily = FontFamily.Cursive,
-                                    modifier = Modifier.fillMaxSize()
-                                )
-                            }
+                                    fontFamily = FontFamily.Cursive
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        IconButton(
+                            modifier = Modifier,
+                            onClick = { onEditUserClick(user.id) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Edit,
+                                contentDescription = "edit user"
+                            )
+                        }
+
+                        IconButton(
+                            modifier = Modifier,
+                            onClick = { viewModel.deleteUser(user) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "Delete"
+                            )
                         }
                     }
+                }
 
             }
         }

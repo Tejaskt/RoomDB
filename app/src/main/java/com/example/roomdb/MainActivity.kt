@@ -1,5 +1,6 @@
 package com.example.roomdb
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,8 @@ import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModelFactory
 import com.example.roomdb.ui.theme.RoomDBTheme
 
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +32,7 @@ class MainActivity : ComponentActivity() {
             RoomDBTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
-                        .safeDrawingPadding()
-                ) { innerPadding ->
+                ) { _ ->
                     val viewModel: DashboardViewModel = viewModel(
                         modelClass = DashboardViewModel::class.java,
                         factory = factory
