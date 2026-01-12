@@ -1,8 +1,6 @@
 package com.example.roomdb.presentation.navigation
 
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,11 +9,11 @@ import androidx.navigation.navArgument
 import com.example.roomdb.presentation.screen.addUser.AddUserScreen
 import com.example.roomdb.presentation.screen.dashboard.DashboardScreen
 import com.example.roomdb.presentation.screen.detail.UserDetailScreen
-import com.example.roomdb.presentation.screen.home.HomeViewModel
+import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 
 @Composable
 fun AppNavGraph (
-    viewmodel : HomeViewModel
+    viewmodel : DashboardViewModel
 ){
     val navController = rememberNavController()
 
@@ -50,7 +48,7 @@ fun AppNavGraph (
             UserDetailScreen(
                 viewModel = viewmodel,
                 userId = userId,
-                navController
+                onBack = {navController.popBackStack()}
             )
         }
     }

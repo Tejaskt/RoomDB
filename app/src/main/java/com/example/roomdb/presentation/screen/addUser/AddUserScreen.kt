@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,11 +36,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.roomdb.R
-import com.example.roomdb.presentation.screen.home.HomeViewModel
+import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 
 @Composable
 fun AddUserScreen(
-    viewModel: HomeViewModel,
+    viewModel: DashboardViewModel,
     onBack:() -> Unit
 ) {
     var name by remember { mutableStateOf("") }
@@ -66,7 +65,7 @@ fun AddUserScreen(
         ) {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowBack,
-                "Edit Profile",
+                "Back",
                 modifier = Modifier.padding(horizontal = 10.dp).size(26.dp)
             )
             Text(
@@ -94,7 +93,11 @@ fun AddUserScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Name") })
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") }
+        )
         OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
         OutlinedTextField(value = age, onValueChange = { age = it }, label = { Text("Age") })
         OutlinedTextField(value = college, onValueChange = { college = it }, label = { Text("College") })
@@ -104,13 +107,22 @@ fun AddUserScreen(
 
         ElevatedButton(
             onClick = {
-                viewModel.addUser(
-                    name,
-                    email,
-                    age.toInt(),
-                    college,
-                    stream
-                )
+
+                if (
+                    name.isNotBlank() &&
+                    email.isNotBlank() &&
+                    age.isNotBlank() &&
+                    college.isNotBlank() &&
+                    stream.isNotBlank()
+                ) {
+                    viewModel.addUser(
+                        name,
+                        email,
+                        age.toInt(),
+                        college,
+                        stream
+                    )
+                }
                 onBack()
             }
         ) {

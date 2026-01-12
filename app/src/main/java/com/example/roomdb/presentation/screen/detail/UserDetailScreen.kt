@@ -35,16 +35,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.roomdb.R
 import com.example.roomdb.presentation.screen.ProfileItem
-import com.example.roomdb.presentation.screen.home.HomeViewModel
+import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 
 @Composable
 fun UserDetailScreen(
-    viewModel: HomeViewModel,
+    viewModel: DashboardViewModel,
     userId: Int,
-    navController : NavController
+    onBack:() -> Unit
 ) {
     val users by viewModel.users.collectAsState()
     val user = users.find { it.id == userId }
@@ -95,15 +94,13 @@ fun UserDetailScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(){
-                Text(
-                    "${it.name} : ${it.age}",
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
+            Text(
+                "${it.name} : ${it.age}",
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(8.dp)
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -114,7 +111,7 @@ fun UserDetailScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             ElevatedButton(
-                onClick = { navController.popBackStack() }
+                onClick = { onBack() }
             ) {
                 Text(
                     text = "Back To Main Screen",

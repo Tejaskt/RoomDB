@@ -12,8 +12,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdb.data.local.AppDatabase
 import com.example.roomdb.data.repository.UserRepository
 import com.example.roomdb.presentation.navigation.AppNavGraph
-import com.example.roomdb.presentation.screen.home.HomeViewModel
-import com.example.roomdb.presentation.screen.home.HomeViewModelFactory
+import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
+import com.example.roomdb.presentation.screen.dashboard.DashboardViewModelFactory
 import com.example.roomdb.ui.theme.RoomDBTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
         val database = AppDatabase.getDatabase(this)
         val repository = UserRepository(database.userDao())
-        val factory = HomeViewModelFactory(repository)
+        val factory = DashboardViewModelFactory(repository)
 
         setContent {
             RoomDBTheme {
@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                         .safeDrawingPadding()
                 ) { innerPadding ->
-                    val viewModel: HomeViewModel = viewModel(
-                        modelClass = HomeViewModel::class.java,
+                    val viewModel: DashboardViewModel = viewModel(
+                        modelClass = DashboardViewModel::class.java,
                         factory = factory
                     )
 

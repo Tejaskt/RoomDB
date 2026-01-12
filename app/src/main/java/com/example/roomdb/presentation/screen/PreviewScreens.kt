@@ -23,14 +23,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -151,7 +148,7 @@ private fun PrevDashboardScreen(
                             ) {
                             Image(
                                 painter = painterResource(R.drawable.profilepic),
-                                contentDescription = "profile Imge",
+                                contentDescription = "profile Image",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .size(48.dp)
@@ -159,6 +156,7 @@ private fun PrevDashboardScreen(
                                     .border(2.dp, Color.DarkGray, CircleShape)
 
                             )
+
                             Column(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -190,7 +188,7 @@ private fun PrevDashboardScreen(
 
 
 
-@Preview(name = "User Details Screen", showBackground = true,)
+@Preview(name = "User Details Screen", showBackground = true)
 @Composable
 private fun PrevUserDetailScreen() {
     Column(
@@ -237,15 +235,14 @@ private fun PrevUserDetailScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row(){
-            Text(
-                "Tejas : 23",
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
+        Text(
+            "Tejas : 23",
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(8.dp)
+        )
+
 
         Spacer(modifier = Modifier.height(20.dp))
 
