@@ -49,7 +49,8 @@ fun AppNavGraph (
             val userId = backStackEntry.arguments?.getInt("userId")!!
             UserDetailScreen(
                 viewModel = viewmodel,
-                userId = userId
+                userId = userId,
+                navController
             )
         }
     }

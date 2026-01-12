@@ -23,11 +23,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -37,6 +40,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -303,6 +307,75 @@ fun ProfileItem(icon: ImageVector, label: String, value: String) {
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
+        }
+    }
+}
+
+@Preview(name= "Add User Screen", showBackground = true)
+@Composable
+private fun PrevAddUserScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        ) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                "Edit Profile",
+                modifier = Modifier.padding(horizontal = 10.dp).size(26.dp)
+            )
+
+            Text(
+                text = "Add User",
+                style = MaterialTheme.typography.titleLarge,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center
+
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(22.dp))
+
+        Image(
+            painter = painterResource(R.drawable.profilepic),
+            contentDescription = "Profile Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(120.dp)
+                .border(4.dp, Color(0xFF54787c), CircleShape)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = "Tejas",
+            onValueChange = {},
+            label = { Text("Name") }
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        ElevatedButton(
+            onClick = {}
+        ) {
+            Text(
+                text = "Save User",
+                style = MaterialTheme.typography.bodyLarge,
+                fontFamily = FontFamily.SansSerif
+            )
         }
     }
 }
