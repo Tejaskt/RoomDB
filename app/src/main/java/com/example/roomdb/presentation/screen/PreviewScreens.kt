@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.home
+package com.example.roomdb.presentation.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,9 +25,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -124,40 +123,6 @@ private fun PrevDashboardScreen(
             modifier = Modifier
                 .fillMaxSize()
         ){
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 16.dp, vertical = 8.dp),
-//                colors = CardDefaults.cardColors(
-//                    containerColor = MaterialTheme.colorScheme.background,
-//                    contentColor = MaterialTheme.colorScheme.primary
-//                ),
-//                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-//            ) {
-//
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    horizontalArrangement = Arrangement.SpaceBetween
-//                ){
-//                    Icon(Icons.Filled.Menu,"Menu", modifier = Modifier.padding(start = 8.dp))
-//                    Text(
-//                        text = "Welcome",
-//                        fontSize = 22.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        fontFamily = FontFamily.Monospace,
-//                        modifier = Modifier
-//                            .padding(8.dp),
-//                        textAlign = TextAlign.Center
-//                    )
-//                    Icon(Icons.Filled.AccountCircle,"Account",modifier = Modifier.padding(end = 8.dp))
-//                }
-//            }
-//
-//            Spacer(modifier = Modifier.height(16.dp))
-//
-//            HorizontalDivider(modifier = Modifier,2.dp, color = Color.Gray)
-
             LazyColumn(
                 modifier = Modifier
                     .padding(padding)
@@ -219,16 +184,24 @@ private fun PrevDashboardScreen(
     }
 }
 
+
+
 @Preview(name = "User Details Screen", showBackground = true,)
 @Composable
 private fun PrevUserDetailScreen() {
     Column(
-        modifier = Modifier.fillMaxSize().background(color = Color.LightGray),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
         ) {
             Text(
                 text = "Profile",
@@ -246,7 +219,7 @@ private fun PrevUserDetailScreen() {
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(22.dp))
 
         Image(
             painter = painterResource(R.drawable.profilepic),
@@ -255,70 +228,37 @@ private fun PrevUserDetailScreen() {
             modifier = Modifier
                 .clip(CircleShape)
                 .size(120.dp)
-                .border(4.dp, Color(0xFF54787c),CircleShape)
+                .border(4.dp, Color(0xFF54787c), CircleShape)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(){
-            Text("Tejas : 23")
+            Text(
+                "Tejas : 23",
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(8.dp)
+            )
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Row(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Icon(Icons.Filled.Email,"email",modifier = Modifier.padding(8.dp))
-            Column() {
-                Text(
-                    text = "Email",
-                    style = MaterialTheme.typography.labelLarge,
-                )
-                Text(
-                    text = "Tejas@gmail.com",
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Icon(Icons.Filled.Place,"Collage",modifier = Modifier.padding(8.dp))
-            Column() {
-                Text(text = "College")
-                Text(text = "Marwadi University")
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Icon(Icons.Filled.PlayArrow,"stream",modifier = Modifier.padding(8.dp))
-            Column() {
-                Text(text = "Stream")
-                Text(text = "MCA")
-            }
-        }
-
-        ProfileItem(Icons.Default.Person, "Name", "Tejas")
+        ProfileItem(Icons.Filled.Email, "Email", "Tejaskt@gmail.com")
+        ProfileItem(Icons.Filled.LocationOn,"College","Marwadi University")
+        ProfileItem(Icons.Filled.PlayArrow,"Stream","Mca")
 
         Spacer(modifier = Modifier.height(8.dp))
-
+        
         ElevatedButton(
             onClick = {}
         ) {
-            Text(text = "Back To Main Screen")
+            Text(
+                text = "Back To Main Screen",
+                style = MaterialTheme.typography.bodyLarge,
+                fontFamily = FontFamily.SansSerif
+            )
         }
 
     }
@@ -326,46 +266,43 @@ private fun PrevUserDetailScreen() {
 
 @Composable
 fun ProfileItem(icon: ImageVector, label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Absolute.Center
-    ) {
-        Icon(
-            icon,
-            contentDescription = null,
-            modifier = Modifier
-        )
-        Spacer(modifier = Modifier.width(32.dp))
-        Column {
-            Text(text = label, fontWeight = FontWeight.SemiBold)
-            Text(text = value, color = Color.Gray)
-        }
-    }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        
+    Card(
+        modifier = Modifier.padding(horizontal = 12.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+
     ) {
-        Icon(Icons.Filled.Email,
-            "email",
-            modifier = Modifier.padding(8.dp)
-        )
-        Column() {
-            Text(
-                text = "Email",
-                style = MaterialTheme.typography.labelLarge,
+        Row(
+            modifier = Modifier
+                .padding(start = 85.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+
+            ) {
+            Icon(
+                icon,
+                null,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(32.dp)
             )
-            Text(
-                text = "Tejas@gmail.com",
-                style = MaterialTheme.typography.bodyMedium,
-            )
+
+            Spacer(modifier = Modifier.width(32.dp))
+
+            Column(
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
 }
