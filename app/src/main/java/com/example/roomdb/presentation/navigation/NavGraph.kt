@@ -26,34 +26,52 @@ fun AppNavGraph (
             DashboardScreen(
                 viewModel = viewmodel,
                 onAddClick = {
-                    navController.navigate(Routes.ADD_USER)
+                    navController.navigate(route = Routes.ADD_USER){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 },
                 onUserClick = { userId ->
                     viewmodel.selectUser(userId)
-                    navController.navigate(Routes.USER_DETAIL)
+                    navController.navigate(Routes.USER_DETAIL){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 },
                 onEditUserClick = { userId ->
                     viewmodel.selectUser(userId)
-                    navController.navigate(Routes.EDIT_USER)
+                    navController.navigate(Routes.EDIT_USER){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
         }
         composable(Routes.ADD_USER){
             AddUserScreen(
                 viewModel = viewmodel,
-                onBack = { navController.popBackStack() },
+                onBack = { navController.popBackStack(
+                    route = Routes.DASHBOARD,
+                    inclusive = false
+                ) },
             )
         }
         composable(Routes.USER_DETAIL) {
             UserDetailScreen(
                 viewModel = viewmodel,
-                onBack = {navController.popBackStack()}
+                onBack = {navController.popBackStack(
+                    route = Routes.DASHBOARD,
+                    inclusive = false
+                )}
             )
         }
         composable(Routes.EDIT_USER) {
             EditUserScreen(
                 viewModel = viewmodel,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack(
+                    route = Routes.DASHBOARD,
+                    inclusive = false
+                ) }
             )
         }
     }
