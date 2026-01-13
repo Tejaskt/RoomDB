@@ -29,10 +29,12 @@ fun AppNavGraph (
                     navController.navigate(Routes.ADD_USER)
                 },
                 onUserClick = { userId ->
-                    navController.navigate("${Routes.USER_DETAIL}/$userId")
+                    viewmodel.selectUser(userId)
+                    navController.navigate(Routes.USER_DETAIL)
                 },
                 onEditUserClick = { userId ->
-                    navController.navigate("${Routes.EDIT_USER}/$userId")
+                    viewmodel.selectUser(userId)
+                    navController.navigate(Routes.EDIT_USER)
                 }
             )
         }
@@ -42,29 +44,15 @@ fun AppNavGraph (
                 onBack = { navController.popBackStack() },
             )
         }
-        composable(
-            route = "${Routes.USER_DETAIL}/{userId}",
-            arguments = listOf(navArgument("userId"){
-                type = NavType.IntType
-            })
-        ) { backStackEntry ->
-            val userId = backStackEntry.arguments?.getInt("userId")!!
+        composable(Routes.USER_DETAIL) {
             UserDetailScreen(
                 viewModel = viewmodel,
-                userId = userId,
                 onBack = {navController.popBackStack()}
             )
         }
-        composable(
-            route = "${Routes.EDIT_USER}/{userId}",
-            arguments = listOf(
-                navArgument("userId") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val userId = backStackEntry.arguments?.getInt("userId")!!
+        composable(Routes.EDIT_USER) {
             EditUserScreen(
                 viewModel = viewmodel,
-                userId = userId,
                 onBack = { navController.popBackStack() }
             )
         }

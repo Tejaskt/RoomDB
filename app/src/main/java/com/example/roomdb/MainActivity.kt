@@ -32,7 +32,8 @@ class MainActivity : ComponentActivity() {
             RoomDBTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
-                ) { _ ->
+                        .safeDrawingPadding()
+                ) {
                     val viewModel: DashboardViewModel = viewModel(
                         modelClass = DashboardViewModel::class.java,
                         factory = factory

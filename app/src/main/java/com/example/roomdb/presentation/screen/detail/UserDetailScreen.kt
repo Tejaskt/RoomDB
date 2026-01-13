@@ -44,10 +44,9 @@ import com.example.roomdb.presentation.utils.UiState
 @Composable
 fun UserDetailScreen(
     viewModel: DashboardViewModel,
-    userId: Int,
     onBack: () -> Unit
 ) {
-    val state by viewModel.getEditUserState(userId).collectAsState()
+    val state by viewModel.selectedUserState.collectAsState()
 
     when(state) {
 

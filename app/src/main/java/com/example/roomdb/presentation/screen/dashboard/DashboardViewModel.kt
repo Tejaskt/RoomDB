@@ -5,8 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
 import com.example.roomdb.presentation.utils.UiState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -15,37 +19,44 @@ class DashboardViewModel (
     private val repository: UserRepository
 ) : ViewModel(){
 
+
+    // state for Dashboard
     val usersState: StateFlow<UiState<List<User>>> =
         repository.users
             .map { UiState.Success(it) as UiState<List<User>> }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
+                started = SharingStarted.Eagerly,
                 initialValue = UiState.Loading
             )
 
-    private val editUserStateMap =
-        mutableMapOf<Int, StateFlow<UiState<User>>>()
 
-    fun getEditUserState(userId: Int): StateFlow<UiState<User>> {
-        return editUserStateMap.getOrPut(userId) {
-            repository.getUserById(userId)
-                .map { user ->
-                    if (user == null) {
-                        UiState.Error("User not found")
-                    } else {
-                        UiState.Success(user)
-                    }
-                }
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.Eagerly, // IMPORTANT
-                    initialValue = UiState.Loading
-                )
-        }
+    // state for edit / details screens
+    private val _selectedUserId = MutableStateFlow<Int?>(null)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val selectedUserState : StateFlow<UiState<User>> =
+        _selectedUserId
+            .filterNotNull()
+            .flatMapLatest{ userId ->
+                repository.getUserById(userId)
+            }
+            .map { user ->
+                if(user == null) UiState.Error("User not found!!")
+                else UiState.Success(user)
+            }
+            .stateIn(
+                viewModelScope, SharingStarted.Eagerly, UiState.Loading
+            )
+
+    // Events
+    fun selectUser(userId: Int){
+        _selectedUserId.value = userId
     }
 
-
+    fun clearSelectedUser(){
+        _selectedUserId.value = null
+    }
     fun addUser(
         name : String,
         email : String,
