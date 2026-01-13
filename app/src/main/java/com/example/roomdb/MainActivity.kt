@@ -10,16 +10,12 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.roomdb.data.local.AppDatabase
-import com.example.roomdb.data.repository.UserRepository
 import com.example.roomdb.presentation.navigation.AppNavGraph
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.ui.theme.RoomDBTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,13 +27,10 @@ class MainActivity : ComponentActivity() {
         val repository = UserRepository(database.userDao())
         val factory = DashboardViewModelFactory(repository)
          */
-
+        @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         setContent {
             RoomDBTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                        .safeDrawingPadding()
-                ) {
+                Scaffold( modifier = Modifier.fillMaxSize().safeDrawingPadding()) {  _ ->
                     val viewModel: DashboardViewModel = hiltViewModel()
                     AppNavGraph(viewModel)
                 }

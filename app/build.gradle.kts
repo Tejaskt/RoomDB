@@ -2,9 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
-
+    alias(libs.plugins.ksp) // for room
+    alias(libs.plugins.hilt) // for hilt
+    kotlin("kapt")
 }
 
 android {
@@ -63,24 +63,22 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // For Navigation
     implementation(libs.androidx.navigation.compose)
 
-
     // room db
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-
     ksp(libs.room.compiler)
 
     // Hilt
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     // Hilt + Compose Navigation
     implementation(libs.hilt.navigation.compose)
 
 }
+
