@@ -1,10 +1,12 @@
 package com.example.roomdb.presentation.screen.dashboard
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
 import com.example.roomdb.presentation.utils.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,9 +16,11 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DashboardViewModel (
-    private val repository: UserRepository
+@HiltViewModel
+class DashboardViewModel @Inject constructor(
+    private val repository: UserRepository,
 ) : ViewModel(){
 
 
@@ -26,7 +30,12 @@ class DashboardViewModel (
             .map { UiState.Success(it) as UiState<List<User>> }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.Eagerly,
+                started = SharingStarted.Eagerly, /*
+                    here we can pass
+                    Eagerly : immediate start the flow even if there is no subscriber,
+                    Lazily : start after there is subscriber and then never end the flow,
+                    WhileSubscribed(5_000) : start the flow when there is subscriber and end the flow after 5 sec when there is no subscriber.
+                */
                 initialValue = UiState.Loading
             )
 
