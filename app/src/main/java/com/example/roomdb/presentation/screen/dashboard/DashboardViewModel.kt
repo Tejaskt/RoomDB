@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
+import com.example.roomdb.presentation.utils.UiState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -14,17 +15,36 @@ class DashboardViewModel (
     private val repository: UserRepository
 ) : ViewModel(){
 
-    val users: StateFlow<List<User>> =
+    val usersState: StateFlow<UiState<List<User>>> =
         repository.users
+            .map { UiState.Success(it) as UiState<List<User>> }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptyList()
+                initialValue = UiState.Loading
             )
 
-    fun getUserById(userId : Int): StateFlow<User?> =
-        repository.getUserById(userId)
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000),null)
+    private val editUserStateMap =
+        mutableMapOf<Int, StateFlow<UiState<User>>>()
+
+    fun getEditUserState(userId: Int): StateFlow<UiState<User>> {
+        return editUserStateMap.getOrPut(userId) {
+            repository.getUserById(userId)
+                .map { user ->
+                    if (user == null) {
+                        UiState.Error("User not found")
+                    } else {
+                        UiState.Success(user)
+                    }
+                }
+                .stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.Eagerly, // IMPORTANT
+                    initialValue = UiState.Loading
+                )
+        }
+    }
+
 
     fun addUser(
         name : String,

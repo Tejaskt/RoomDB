@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -52,6 +53,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.roomdb.R
+import com.example.roomdb.data.local.entity.User
+import com.example.roomdb.presentation.utils.UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +64,7 @@ fun DashboardScreen(
     onUserClick: (Int)-> Unit,
     onEditUserClick: (Int) -> Unit
 ){
-    val users by viewModel.users.collectAsState()
+    val state by viewModel.usersState.collectAsState()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -111,76 +114,85 @@ fun DashboardScreen(
 
     ) { padding ->
 
-        LazyColumn(
-            modifier = Modifier.padding(padding).background(color = Color.LightGray).fillMaxHeight()) {
-            items(users) { user ->
-                Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable { onUserClick(user.id) },
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        shape = RoundedCornerShape(corner = CornerSize(16.dp))
-                ) {
-                    Row(
+        when (state) {
+            is UiState.Loading -> CircularProgressIndicator()
+
+            is UiState.Error -> Text("Something went wrong")
+
+            is UiState.Success -> {
+                val users = (state as UiState.Success<List<User>>).data
+                LazyColumn(
+                    modifier = Modifier.padding(padding).background(color = Color.LightGray).fillMaxHeight()) {
+                    items(users) { user ->
+                        Card(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .clickable { onUserClick(user.id) },
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            shape = RoundedCornerShape(corner = CornerSize(16.dp))
                         ) {
-
-                        Image(
-                                painter = painterResource(R.drawable.profilepic),
-                                contentDescription = "profile Image",
-                                contentScale = ContentScale.Crop,
+                            Row(
                                 modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(CircleShape)
-                                    .border(2.dp, Color.DarkGray, CircleShape)
-                            )
-
-                        Column(
-                                modifier = Modifier
-                                    .padding(start = 8.dp),
-                                verticalArrangement = Arrangement.SpaceEvenly
+                                    .fillMaxSize()
+                                    .padding(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                            Text(
-                                    text = user.name,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+
+                                Image(
+                                    painter = painterResource(R.drawable.profilepic),
+                                    contentDescription = "profile Image",
+                                    contentScale = ContentScale.Crop,
                                     modifier = Modifier
-                                        .padding(bottom = 2.dp)
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .border(2.dp, Color.DarkGray, CircleShape)
                                 )
-                            Text(
-                                    text = user.email,
-                                    fontFamily = FontFamily.Cursive
-                            )
+
+                                Column(
+                                    modifier = Modifier
+                                        .padding(start = 8.dp),
+                                    verticalArrangement = Arrangement.SpaceEvenly
+                                ) {
+                                    Text(
+                                        text = user.name,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier
+                                            .padding(bottom = 2.dp)
+                                    )
+                                    Text(
+                                        text = user.email,
+                                        fontFamily = FontFamily.Cursive
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                IconButton(
+                                    modifier = Modifier,
+                                    onClick = { onEditUserClick(user.id) }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Edit,
+                                        contentDescription = "edit user"
+                                    )
+                                }
+
+                                IconButton(
+                                    modifier = Modifier,
+                                    onClick = { viewModel.deleteUser(user) }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "Delete"
+                                    )
+                                }
+                            }
                         }
 
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        IconButton(
-                            modifier = Modifier,
-                            onClick = { onEditUserClick(user.id) }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Edit,
-                                contentDescription = "edit user"
-                            )
-                        }
-
-                        IconButton(
-                            modifier = Modifier,
-                            onClick = { viewModel.deleteUser(user) }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Delete,
-                                contentDescription = "Delete"
-                            )
-                        }
                     }
                 }
-
             }
         }
     }

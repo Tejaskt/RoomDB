@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +41,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.roomdb.R
+import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
+import com.example.roomdb.presentation.utils.UiState
 
 @Composable
 fun EditUserScreen(
@@ -47,95 +51,116 @@ fun EditUserScreen(
     userId: Int,
     onBack: () -> Unit
 ) {
-    val user by viewModel.getUserById(userId).collectAsState()
+    val state by viewModel.getEditUserState(userId).collectAsState()
 
-    if (user == null) {
-        Text("User not found")
-    }
+    when(state) {
 
-    var name by remember { mutableStateOf(user!!.name) }
-    var email by remember { mutableStateOf(user!!.email) }
-    var age by remember { mutableStateOf(user!!.age.toString()) }
-    var college by remember { mutableStateOf(user!!.collage) }
-    var stream by remember { mutableStateOf(user!!.stream) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.LightGray),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-        ) {
-            IconButton(
-                onClick = onBack,
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .size(26.dp),
-                content = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "BackArrow"
-                    )
-                },
-            )
-
-            Text(
-                text = "Edit User",
-                style = MaterialTheme.typography.titleLarge,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center
-            )
-        }
-
-        Spacer(modifier = Modifier.height(22.dp))
-        Image(
-            painter = painterResource(R.drawable.profilepic),
-            contentDescription = "Profile Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(CircleShape).size(120.dp)
-                .border(4.dp, Color(0xFF54787c), CircleShape)
-        )
-
-        Spacer (modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(name, { name = it }, label = { Text("Name") })
-        OutlinedTextField(email, { email = it }, label = { Text("Email") })
-        OutlinedTextField(age, { age = it }, label = { Text("Age") })
-        OutlinedTextField(college, { college = it }, label = { Text("College") })
-        OutlinedTextField(stream, { stream = it }, label = { Text("Stream") })
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                viewModel.updateUser(
-                    user!!.copy(
-                        name = name,
-                        email = email,
-                        age = age.toInt(),
-                        collage = college,
-                        stream = stream
-                    )
-                )
-                onBack()
+        is UiState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator()
             }
-        ) {
-            Text(
-                text = "Update User",
-                style = MaterialTheme.typography.bodyLarge,
-                fontFamily = FontFamily.SansSerif
-            )
+        }
+        is UiState.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = (state as UiState.Error).message,
+                    color = Color.Red
+                )
+            }
         }
 
+        is UiState.Success -> {
+            val user = (state as UiState.Success<User>).data
+
+            var name by remember(user.id) { mutableStateOf(user.name) }
+            var email by remember(user.id) { mutableStateOf(user.email) }
+            var age by remember(user.id) { mutableStateOf(user.age.toString()) }
+            var college by remember(user.id) { mutableStateOf(user.collage) }
+            var stream by remember(user.id) { mutableStateOf(user.stream) }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.LightGray),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                ) {
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .size(26.dp),
+                        content = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "BackArrow"
+                            )
+                        },
+                    )
+
+                    Text(
+                        text = "Edit User",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(22.dp))
+                Image(
+                    painter = painterResource(R.drawable.profilepic),
+                    contentDescription = "Profile Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.clip(CircleShape).size(120.dp)
+                        .border(4.dp, Color(0xFF54787c), CircleShape)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(name, { name = it }, label = { Text("Name") })
+                OutlinedTextField(email, { email = it }, label = { Text("Email") })
+                OutlinedTextField(age, { age = it }, label = { Text("Age") })
+                OutlinedTextField(college, { college = it }, label = { Text("College") })
+                OutlinedTextField(stream, { stream = it }, label = { Text("Stream") })
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                ElevatedButton(
+                    onClick = {
+                        viewModel.updateUser(
+                            user.copy(
+                                name = name,
+                                email = email,
+                                age = age.toInt(),
+                                collage = college,
+                                stream = stream
+                            )
+                        )
+                        onBack()
+                    }
+                ) {
+                    Text(
+                        text = "Update User",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                }
+            }
+        }
     }
 }
