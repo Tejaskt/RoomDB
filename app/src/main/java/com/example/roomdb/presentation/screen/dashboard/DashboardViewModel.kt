@@ -21,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val repository: UserRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel(){
 
 
@@ -41,7 +42,10 @@ class DashboardViewModel @Inject constructor(
 
 
     // state for edit / details screens
-    private val _selectedUserId = MutableStateFlow<Int?>(null)
+    private val _selectedUserId = savedStateHandle.getStateFlow<Int?>(
+        key = "selected_user_id",
+        initialValue = null
+    )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedUserState : StateFlow<UiState<User>> =
@@ -60,11 +64,11 @@ class DashboardViewModel @Inject constructor(
 
     // Events
     fun selectUser(userId: Int){
-        _selectedUserId.value = userId
+        savedStateHandle["selected_user_id"] = userId
     }
 
     fun clearSelectedUser(){
-        _selectedUserId.value = null
+        savedStateHandle["selected_user_id"] = null
     }
     fun addUser(
         name : String,
