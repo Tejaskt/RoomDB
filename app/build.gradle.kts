@@ -80,5 +80,11 @@ dependencies {
     // Hilt + Compose Navigation
     implementation(libs.hilt.navigation.compose)
 
+    // retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
+
 }
 
