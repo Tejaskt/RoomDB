@@ -84,7 +84,6 @@ class DashboardViewModel @Inject constructor(
         )
     }
 
-
     fun submitAddUser(onSuccess: () -> Unit) {
         val validated = validate(_addFormState.value)
 

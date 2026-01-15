@@ -97,8 +97,11 @@ fun AddUserScreen(
 
         OutlinedTextField(
             value = formState.name,
-            onValueChange = { newValue -> viewModel.updateAddForm { state ->
-                state.copy(name = newValue, nameError = null) } },
+            onValueChange = { newValue ->
+                viewModel.updateAddForm { state ->
+                    state.copy(name = newValue, nameError = null)
+                }
+            },
             label = { Text("Name") },
             isError = formState.nameError != null
         )
@@ -106,8 +109,11 @@ fun AddUserScreen(
 
         OutlinedTextField(
             value = formState.email,
-            onValueChange = {newValue -> viewModel.updateAddForm { state->
-                state.copy(email = newValue, emailError = null) } },
+            onValueChange = { newValue ->
+                viewModel.updateAddForm { state ->
+                    state.copy(email = newValue, emailError = null)
+                }
+            },
             label = { Text("Email") },
             isError = formState.emailError != null
         )
@@ -115,8 +121,11 @@ fun AddUserScreen(
 
         OutlinedTextField(
             value = formState.age,
-            onValueChange = { newValue -> viewModel.updateAddForm { state ->
-                state.copy(age = newValue, ageError = null) } },
+            onValueChange = { newValue ->
+                viewModel.updateAddForm { state ->
+                    state.copy(age = newValue, ageError = null)
+                }
+            },
             label = { Text("Age") },
             isError = formState.ageError != null
         )
@@ -124,8 +133,11 @@ fun AddUserScreen(
 
         OutlinedTextField(
             value = formState.college,
-            onValueChange = {newValue -> viewModel.updateAddForm { state ->
-                state.copy(college = newValue, collegeError = null) } },
+            onValueChange = { newValue ->
+                viewModel.updateAddForm { state ->
+                    state.copy(college = newValue, collegeError = null)
+                }
+            },
             label = { Text("College") },
             isError = formState.collegeError != null
         )
@@ -133,8 +145,11 @@ fun AddUserScreen(
 
         OutlinedTextField(
             value = formState.stream,
-            onValueChange = { newValue -> viewModel.updateAddForm {state ->
-                state.copy(stream = newValue, streamError = null) } },
+            onValueChange = { newValue ->
+                viewModel.updateAddForm { state ->
+                    state.copy(stream = newValue, streamError = null)
+                }
+            },
             label = { Text("Stream") },
             isError = formState.streamError != null
         )

@@ -13,9 +13,8 @@ abstract class AppDatabase : RoomDatabase(){
 
     abstract fun userDao() : UserDao
 
-    /*
+    /* removed manual creation because of hilt.
 
-   removed manual creation because of hilt.
    companion object{
        @Volatile
        private var INSTANCE: AppDatabase? = null
@@ -35,4 +34,5 @@ abstract class AppDatabase : RoomDatabase(){
        }
 
    }*/
+
 }

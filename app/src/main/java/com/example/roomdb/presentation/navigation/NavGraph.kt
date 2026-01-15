@@ -48,28 +48,34 @@ fun AppNavGraph (
         composable(Routes.ADD_USER){
             AddUserScreen(
                 viewModel = viewmodel,
-                onBack = { navController.popBackStack(
-                    route = Routes.DASHBOARD,
-                    inclusive = false
-                ) },
+                onBack = {
+                    navController.popBackStack(
+                        route = Routes.DASHBOARD,
+                        inclusive = false
+                    )
+                },
             )
         }
         composable(Routes.USER_DETAIL) {
             UserDetailScreen(
                 viewModel = viewmodel,
-                onBack = {navController.popBackStack(
-                    route = Routes.DASHBOARD,
-                    inclusive = false
-                )}
+                onBack = {
+                    navController.popBackStack(
+                        route = Routes.DASHBOARD,
+                        inclusive = false
+                    )
+                }
             )
         }
         composable(Routes.EDIT_USER) {
             EditUserScreen(
                 viewModel = viewmodel,
-                onBack = { navController.popBackStack(
-                    route = Routes.DASHBOARD,
-                    inclusive = false
-                ) }
+                onBack = {
+                    navController.popBackStack(
+                        route = Routes.DASHBOARD,
+                        inclusive = false
+                    )
+                }
             )
         }
     }

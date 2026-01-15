@@ -67,9 +67,9 @@ import com.example.roomdb.presentation.utils.UiState
 fun DashboardScreen(
     viewModel: DashboardViewModel,
     onAddClick: () -> Unit,
-    onUserClick: (Int)-> Unit,
+    onUserClick: (Int) -> Unit,
     onEditUserClick: (Int) -> Unit
-){
+) {
     val state by viewModel.usersState.collectAsState()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -78,13 +78,13 @@ fun DashboardScreen(
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
-            when(event){
+            when (event) {
                 is UiEvent.ShowUndoDelete -> {
                     val result = snackBarHostState.showSnackbar(
                         message = "User Deleted",
                         actionLabel = "UNDO"
                     )
-                    if (result == SnackbarResult.ActionPerformed){
+                    if (result == SnackbarResult.ActionPerformed) {
                         viewModel.undoDelete(event.user)
                     }
                 }
@@ -137,7 +137,7 @@ fun DashboardScreen(
             )
         },
 
-        snackbarHost = { SnackbarHost(snackBarHostState)}
+        snackbarHost = { SnackbarHost(snackBarHostState) }
 
     ) { padding ->
 
@@ -149,7 +149,11 @@ fun DashboardScreen(
             is UiState.Success -> {
                 val users = (state as UiState.Success<List<User>>).data
                 LazyColumn(
-                    modifier = Modifier.padding(padding).background(color = Color.LightGray).fillMaxHeight()) {
+                    modifier = Modifier
+                        .padding(padding)
+                        .background(color = Color.LightGray)
+                        .fillMaxHeight()
+                ) {
                     items(users) { user ->
                         Card(
                             modifier = Modifier

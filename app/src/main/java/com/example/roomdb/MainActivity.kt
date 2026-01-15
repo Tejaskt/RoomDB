@@ -22,11 +22,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        /* removed because of hilt
+        /* removed manual creation of instance because of hilt
         val database = AppDatabase.getDatabase(this)
         val repository = UserRepository(database.userDao())
         val factory = DashboardViewModelFactory(repository)
          */
+
+
         @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         setContent {
             RoomDBTheme {
