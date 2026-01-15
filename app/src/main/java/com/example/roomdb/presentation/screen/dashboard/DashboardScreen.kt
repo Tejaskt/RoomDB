@@ -34,12 +34,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
+import com.example.roomdb.presentation.utils.UiEvent
 import com.example.roomdb.presentation.utils.UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,6 +73,24 @@ fun DashboardScreen(
     val state by viewModel.usersState.collectAsState()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when(event){
+                is UiEvent.ShowUndoDelete -> {
+                    val result = snackBarHostState.showSnackbar(
+                        message = "User Deleted",
+                        actionLabel = "UNDO"
+                    )
+                    if (result == SnackbarResult.ActionPerformed){
+                        viewModel.undoDelete(event.user)
+                    }
+                }
+            }
+        }
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -100,6 +124,7 @@ fun DashboardScreen(
                     }
                 },
                 actions = {
+
                     IconButton(onClick = { /* do something */ }) {
                         Icon(
                             imageVector = Icons.Filled.AccountCircle,
@@ -111,6 +136,8 @@ fun DashboardScreen(
                 scrollBehavior = scrollBehavior,
             )
         },
+
+        snackbarHost = { SnackbarHost(snackBarHostState)}
 
     ) { padding ->
 

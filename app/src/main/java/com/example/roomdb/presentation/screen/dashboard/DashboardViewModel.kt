@@ -5,95 +5,180 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
+import com.example.roomdb.presentation.utils.UiEvent
 import com.example.roomdb.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.example.roomdb.presentation.screen.addEditUser.util.UserFormState
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val repository: UserRepository,
     private val savedStateHandle: SavedStateHandle
-) : ViewModel(){
+) : ViewModel() {
 
+    /* ---------------- EVENTS ---------------- */
 
-    // state for Dashboard
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    /* ---------------- DASHBOARD STATE ---------------- */
+
     val usersState: StateFlow<UiState<List<User>>> =
         repository.users
             .map { UiState.Success(it) as UiState<List<User>> }
             .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Eagerly, /*
-                    here we can pass
-                    Eagerly : immediate start the flow even if there is no subscriber,
-                    Lazily : start after there is subscriber and then never end the flow,
-                    WhileSubscribed(5_000) : start the flow when there is subscriber and end the flow after 5 sec when there is no subscriber.
-                */
-                initialValue = UiState.Loading
+                viewModelScope,
+                SharingStarted.Eagerly,
+                UiState.Loading
             )
 
+    /* ---------------- SELECTED USER ---------------- */
 
-    // state for edit / details screens
-    private val _selectedUserId = savedStateHandle.getStateFlow<Int?>(
-        key = "selected_user_id",
-        initialValue = null
-    )
+    private val _selectedUserId =
+        savedStateHandle.getStateFlow<Int?>("selected_user_id", null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val selectedUserState : StateFlow<UiState<User>> =
+    val selectedUserState: StateFlow<UiState<User>> =
         _selectedUserId
             .filterNotNull()
-            .flatMapLatest{ userId ->
-                repository.getUserById(userId)
-            }
+            .flatMapLatest { repository.getUserById(it) }
             .map { user ->
-                if(user == null) UiState.Error("User not found!!")
-                else UiState.Success(user)
+                user?.let { UiState.Success(it) }
+                    ?: UiState.Error("User not found")
             }
-            .stateIn(
-                viewModelScope, SharingStarted.Eagerly, UiState.Loading
-            )
+            .stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Loading)
 
-    // Events
-    fun selectUser(userId: Int){
+    fun selectUser(userId: Int) {
         savedStateHandle["selected_user_id"] = userId
     }
 
-    fun clearSelectedUser(){
-        savedStateHandle["selected_user_id"] = null
+    /* ---------------- FORM STATE ---------------- */
+
+    private val _editFormState = MutableStateFlow(UserFormState())
+    val editFormState: StateFlow<UserFormState> = _editFormState
+
+    private val _addFormState = MutableStateFlow(UserFormState())
+    val addFormState: StateFlow<UserFormState> = _addFormState
+
+
+    private fun validate(state: UserFormState): UserFormState {
+        return state.copy(
+            nameError = if (state.name.isBlank()) "Name required" else null,
+            emailError = if (!state.email.contains("@")) "Invalid email" else null,
+            ageError = if (state.age.toIntOrNull() == null) "Age must be a number" else null,
+            collegeError = if (state.college.isBlank()) "College required" else null,
+            streamError = if (state.stream.isBlank()) "Stream required" else null
+        )
     }
-    fun addUser(
-        name : String,
-        email : String,
-        age : Int,
-        collage : String,
-        stream : String
-    ){
+
+
+    fun submitAddUser(onSuccess: () -> Unit) {
+        val validated = validate(_addFormState.value)
+
+        val hasError = listOf(
+            validated.nameError,
+            validated.emailError,
+            validated.ageError,
+            validated.collegeError,
+            validated.streamError
+        ).any { it != null }
+
+        if (hasError) {
+            _addFormState.value = validated
+            return
+        }
+
         viewModelScope.launch {
             repository.insertUser(
                 User(
-                    name = name, email = email, age = age, collage = collage, stream = stream
+                    name = validated.name,
+                    email = validated.email,
+                    age = validated.age.toInt(),
+                    collage = validated.college,
+                    stream = validated.stream
                 )
             )
+            _addFormState.value = UserFormState()
+            onSuccess()
         }
     }
 
-    fun updateUser(user: User){
+    fun updateAddForm(update: (UserFormState) -> UserFormState) {
+        _addFormState.update(update)
+    }
+
+    fun submitEditUser(
+        userId: Int,
+        name: String,
+        email: String,
+        age: String,
+        college: String,
+        stream: String,
+        onSuccess: () -> Unit
+    ) {
+        val validated = validate(
+            UserFormState(
+                name = name,
+                email = email,
+                age = age,
+                college = college,
+                stream = stream
+            )
+        )
+
+        val hasError = listOf(
+            validated.nameError,
+            validated.emailError,
+            validated.ageError,
+            validated.collegeError,
+            validated.streamError
+        ).any { it != null }
+
+        if (hasError) {
+            _editFormState.value = validated
+            return
+        }
+
         viewModelScope.launch {
-            repository.updateUser(user)
+            repository.updateUser(
+                User(
+                    id = userId,
+                    name = name,
+                    email = email,
+                    age = age.toInt(),
+                    collage = college,
+                    stream = stream
+                )
+            )
+            _editFormState.value = UserFormState()
+            onSuccess()
         }
     }
-    fun deleteUser(user : User){
+
+    fun deleteUser(user: User) {
         viewModelScope.launch {
             repository.deleteUser(user)
+            _eventFlow.emit(UiEvent.ShowUndoDelete(user))
         }
     }
+
+    fun undoDelete(user: User) {
+        viewModelScope.launch {
+            repository.insertUser(user)
+        }
+    }
+
 }

@@ -3,7 +3,6 @@ package com.example.roomdb.data.local.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.roomdb.data.local.entity.User
@@ -16,6 +15,8 @@ interface UserDao{
     fun getAllUsers(): Flow<List<User>>
 
     @Query("SELECT * FROM users WHERE id = :id")
+
+
     fun getUserById(id: Int) : Flow<User?>
 
     @Insert

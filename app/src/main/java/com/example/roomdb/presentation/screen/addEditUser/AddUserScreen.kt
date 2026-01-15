@@ -22,10 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,11 +42,8 @@ fun AddUserScreen(
     viewModel: DashboardViewModel,
     onBack: () -> Unit
 ) {
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
-    var college by remember { mutableStateOf("") }
-    var stream by remember { mutableStateOf("") }
+
+    val formState by viewModel.addFormState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -87,38 +82,68 @@ fun AddUserScreen(
         }
 
         Spacer(modifier = Modifier.height(22.dp))
+
         Image(
             painter = painterResource(R.drawable.profilepic),
             contentDescription = "Profile Image",
             contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(CircleShape).size(120.dp)
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(120.dp)
                 .border(4.dp, Color(0xFF54787c), CircleShape)
         )
 
-        Spacer (modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField (value = name, onValueChange = { name = it }, label = { Text("Name") })
-        OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
-        OutlinedTextField(value = age, onValueChange = { age = it }, label = { Text("Age") })
-        OutlinedTextField(value = college, onValueChange = { college = it }, label = { Text("College") })
-        OutlinedTextField(value = stream, onValueChange = { stream = it }, label = { Text("Stream") })
+        OutlinedTextField(
+            value = formState.name,
+            onValueChange = { newValue -> viewModel.updateAddForm { state ->
+                state.copy(name = newValue, nameError = null) } },
+            label = { Text("Name") },
+            isError = formState.nameError != null
+        )
+        formState.nameError?.let { Text(text = it, color = Color.Red) }
+
+        OutlinedTextField(
+            value = formState.email,
+            onValueChange = {newValue -> viewModel.updateAddForm { state->
+                state.copy(email = newValue, emailError = null) } },
+            label = { Text("Email") },
+            isError = formState.emailError != null
+        )
+        formState.emailError?.let { Text(text = it, color = Color.Red) }
+
+        OutlinedTextField(
+            value = formState.age,
+            onValueChange = { newValue -> viewModel.updateAddForm { state ->
+                state.copy(age = newValue, ageError = null) } },
+            label = { Text("Age") },
+            isError = formState.ageError != null
+        )
+        formState.ageError?.let { Text(text = it, color = Color.Red) }
+
+        OutlinedTextField(
+            value = formState.college,
+            onValueChange = {newValue -> viewModel.updateAddForm { state ->
+                state.copy(college = newValue, collegeError = null) } },
+            label = { Text("College") },
+            isError = formState.collegeError != null
+        )
+        formState.collegeError?.let { Text(text = it, color = Color.Red) }
+
+        OutlinedTextField(
+            value = formState.stream,
+            onValueChange = { newValue -> viewModel.updateAddForm {state ->
+                state.copy(stream = newValue, streamError = null) } },
+            label = { Text("Stream") },
+            isError = formState.streamError != null
+        )
+        formState.streamError?.let { Text(text = it, color = Color.Red) }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        ElevatedButton(
-            onClick = {
-                if (
-                    name.isNotBlank() &&
-                    email.isNotBlank() &&
-                    age.isNotBlank() &&
-                    college.isNotBlank() &&
-                    stream.isNotBlank())
-                {
-                    viewModel.addUser( name = name, email = email, age = age.toInt(), collage = college, stream = stream )
-                    onBack ()
-                }
-            }
-        ) {
+        ElevatedButton(onClick = { viewModel.submitAddUser { onBack() } })
+        {
             Text(
                 text = "Save User",
                 style = MaterialTheme.typography.bodyLarge,

@@ -1,5 +1,7 @@
 package com.example.roomdb.presentation.utils
 
+import com.example.roomdb.data.local.entity.User
+
 
 sealed class UiState<out T>{
     object Loading : UiState<Nothing>()

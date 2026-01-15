@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -51,22 +50,24 @@ fun EditUserScreen(
     onBack: () -> Unit
 ) {
     val state by viewModel.selectedUserState.collectAsState()
+    val formState by viewModel.editFormState.collectAsState()
 
-    when(state) {
+    when (state) {
 
         is UiState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 CircularProgressIndicator()
             }
         }
+
         is UiState.Error -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Text(
                     text = (state as UiState.Error).message,
                     color = Color.Red
@@ -78,7 +79,9 @@ fun EditUserScreen(
             val user = (state as UiState.Success<User>).data
 
             var name by remember(user.id) { mutableStateOf(user.name) }
-            var email by remember(user.id) { mutableStateOf(user.email) }
+            var email by remember(
+                user.id
+            ) { mutableStateOf(user.email) }
             var age by remember(user.id) { mutableStateOf(user.age.toString()) }
             var college by remember(user.id) { mutableStateOf(user.collage) }
             var stream by remember(user.id) { mutableStateOf(user.stream) }
@@ -125,32 +128,67 @@ fun EditUserScreen(
                     painter = painterResource(R.drawable.profilepic),
                     contentDescription = "Profile Image",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.clip(CircleShape).size(120.dp)
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(120.dp)
                         .border(4.dp, Color(0xFF54787c), CircleShape)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                OutlinedTextField(name, { name = it }, label = { Text("Name") })
-                OutlinedTextField(email, { email = it }, label = { Text("Email") })
-                OutlinedTextField(age, { age = it }, label = { Text("Age") })
-                OutlinedTextField(college, { college = it }, label = { Text("College") })
-                OutlinedTextField(stream, { stream = it }, label = { Text("Stream") })
+                OutlinedTextField(
+                    name,
+                    { name = it },
+                    label = { Text("Name") },
+                    isError = formState.nameError != null
+                )
+                formState.nameError?.let { Text(text = it, color = Color.Red) }
+
+                OutlinedTextField(
+                    email,
+                    { email = it },
+                    label = { Text("Email") },
+                    isError = formState.emailError != null
+                )
+                formState.emailError?.let { Text(text = it, color = Color.Red) }
+
+                OutlinedTextField(
+                    age,
+                    { age = it },
+                    label = { Text("Age") },
+                    isError = formState.ageError != null
+                )
+                formState.ageError?.let { Text(text = it, color = Color.Red) }
+
+                OutlinedTextField(
+                    college,
+                    { college = it },
+                    label = { Text("College") },
+                    isError = formState.collegeError != null
+                )
+                formState.collegeError?.let { Text(text = it, color = Color.Red) }
+
+                OutlinedTextField(
+                    stream,
+                    { stream = it },
+                    label = { Text("Stream") },
+                    isError = formState.streamError != null
+                )
+                formState.streamError?.let { Text(text = it, color = Color.Red) }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 ElevatedButton(
                     onClick = {
-                        viewModel.updateUser(
-                            user.copy(
-                                name = name,
-                                email = email,
-                                age = age.toInt(),
-                                collage = college,
-                                stream = stream
-                            )
+                        viewModel.submitEditUser(
+                            userId = user.id,
+                            name = name,
+                            email = email,
+                            age = age,
+                            college = college,
+                            stream = stream,
+                            onSuccess = onBack
                         )
-                        onBack()
                     }
                 ) {
                     Text(
