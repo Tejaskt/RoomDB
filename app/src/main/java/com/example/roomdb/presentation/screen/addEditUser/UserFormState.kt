@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.addEditUser.util
+package com.example.roomdb.presentation.screen.addEditUser
 
 data class UserFormState(
     val name: String = "",

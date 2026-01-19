@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.example.roomdb.presentation.screen.addEditUser.util.UserFormState
+import com.example.roomdb.presentation.screen.addEditUser.UserFormState
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel

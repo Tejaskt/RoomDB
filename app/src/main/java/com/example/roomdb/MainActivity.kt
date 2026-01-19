@@ -32,7 +32,11 @@ class MainActivity : ComponentActivity() {
         @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         setContent {
             RoomDBTheme {
-                Scaffold( modifier = Modifier.fillMaxSize().safeDrawingPadding()) {  _ ->
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .safeDrawingPadding()
+                ) { _ ->
                     val viewModel: DashboardViewModel = hiltViewModel()
                     AppNavGraph(viewModel)
                 }

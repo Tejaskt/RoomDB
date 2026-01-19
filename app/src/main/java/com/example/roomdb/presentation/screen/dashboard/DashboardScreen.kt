@@ -119,7 +119,7 @@ fun DashboardScreen(
                         Icon(
                             imageVector = Icons.Filled.Menu,
                             contentDescription = "Localized description",
-                            modifier = Modifier.size(26.dp)
+                            modifier = Modifier.size(30.dp)
                         )
                     }
                 },
@@ -129,7 +129,8 @@ fun DashboardScreen(
                         Icon(
                             imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "Localized description",
-                            modifier = Modifier.size(26.dp)
+                            modifier = Modifier.size(30.dp)
+
                         )
                     }
                 },
@@ -158,10 +159,12 @@ fun DashboardScreen(
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(8.dp)
-                                .clickable { onUserClick(user.id) },
+                                .padding(horizontal = 8.dp)
+                                .clickable { onUserClick(user.id) }
+                                .padding(8.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                            shape = RoundedCornerShape(corner = CornerSize(16.dp))
+                            shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+
                         ) {
                             Row(
                                 modifier = Modifier
