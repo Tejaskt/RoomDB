@@ -3,8 +3,9 @@ package com.example.roomdb.presentation.screen.addEditUser
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -45,125 +49,127 @@ fun AddUserScreen(
 
     val formState by viewModel.addFormState.collectAsState()
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.LightGray),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-        ) {
-            IconButton(
-                onClick = onBack,
+        item {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .size(26.dp),
-                content = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "BackArrow"
-                    )
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                IconButton(
+                    onClick = onBack,
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .size(26.dp),
+                    content = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "BackArrow"
+                        )
+                    },
+                )
+
+                Text(
+                    text = "Add User",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Spacer(modifier = Modifier.height(22.dp))
+
+            Image(
+                painter = painterResource(R.drawable.profilepic),
+                contentDescription = "Profile Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(120.dp)
+                    .border(4.dp, Color(0xFF54787c), CircleShape)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = formState.name,
+                onValueChange = { newValue ->
+                    viewModel.updateAddForm { state ->
+                        state.copy(name = newValue, nameError = null)
+                    }
                 },
+                label = { Text("Name") },
+                isError = formState.nameError != null
             )
+            formState.nameError?.let { Text(text = it, color = Color.Red) }
 
-            Text(
-                text = "Add User",
-                style = MaterialTheme.typography.titleLarge,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center
+            OutlinedTextField(
+                value = formState.email,
+                onValueChange = { newValue ->
+                    viewModel.updateAddForm { state ->
+                        state.copy(email = newValue, emailError = null)
+                    }
+                },
+                label = { Text("Email") },
+                isError = formState.emailError != null
             )
-        }
+            formState.emailError?.let { Text(text = it, color = Color.Red) }
 
-        Spacer(modifier = Modifier.height(22.dp))
-
-        Image(
-            painter = painterResource(R.drawable.profilepic),
-            contentDescription = "Profile Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(120.dp)
-                .border(4.dp, Color(0xFF54787c), CircleShape)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = formState.name,
-            onValueChange = { newValue ->
-                viewModel.updateAddForm { state ->
-                    state.copy(name = newValue, nameError = null)
-                }
-            },
-            label = { Text("Name") },
-            isError = formState.nameError != null
-        )
-        formState.nameError?.let { Text(text = it, color = Color.Red) }
-
-        OutlinedTextField(
-            value = formState.email,
-            onValueChange = { newValue ->
-                viewModel.updateAddForm { state ->
-                    state.copy(email = newValue, emailError = null)
-                }
-            },
-            label = { Text("Email") },
-            isError = formState.emailError != null
-        )
-        formState.emailError?.let { Text(text = it, color = Color.Red) }
-
-        OutlinedTextField(
-            value = formState.age,
-            onValueChange = { newValue ->
-                viewModel.updateAddForm { state ->
-                    state.copy(age = newValue, ageError = null)
-                }
-            },
-            label = { Text("Age") },
-            isError = formState.ageError != null
-        )
-        formState.ageError?.let { Text(text = it, color = Color.Red) }
-
-        OutlinedTextField(
-            value = formState.college,
-            onValueChange = { newValue ->
-                viewModel.updateAddForm { state ->
-                    state.copy(college = newValue, collegeError = null)
-                }
-            },
-            label = { Text("College") },
-            isError = formState.collegeError != null
-        )
-        formState.collegeError?.let { Text(text = it, color = Color.Red) }
-
-        OutlinedTextField(
-            value = formState.stream,
-            onValueChange = { newValue ->
-                viewModel.updateAddForm { state ->
-                    state.copy(stream = newValue, streamError = null)
-                }
-            },
-            label = { Text("Stream") },
-            isError = formState.streamError != null
-        )
-        formState.streamError?.let { Text(text = it, color = Color.Red) }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        ElevatedButton(onClick = { viewModel.submitAddUser { onBack() } })
-        {
-            Text(
-                text = "Save User",
-                style = MaterialTheme.typography.bodyLarge,
-                fontFamily = FontFamily.SansSerif
+            OutlinedTextField(
+                value = formState.age,
+                onValueChange = { newValue ->
+                    viewModel.updateAddForm { state ->
+                        state.copy(age = newValue, ageError = null)
+                    }
+                },
+                label = { Text("Age") },
+                isError = formState.ageError != null
             )
+            formState.ageError?.let { Text(text = it, color = Color.Red) }
+
+            OutlinedTextField(
+                value = formState.college,
+                onValueChange = { newValue ->
+                    viewModel.updateAddForm { state ->
+                        state.copy(college = newValue, collegeError = null)
+                    }
+                },
+                label = { Text("College") },
+                isError = formState.collegeError != null
+            )
+            formState.collegeError?.let { Text(text = it, color = Color.Red) }
+
+            OutlinedTextField(
+                value = formState.stream,
+                onValueChange = { newValue ->
+                    viewModel.updateAddForm { state ->
+                        state.copy(stream = newValue, streamError = null)
+                    }
+                },
+                label = { Text("Stream") },
+                isError = formState.streamError != null
+            )
+            formState.streamError?.let { Text(text = it, color = Color.Red) }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            ElevatedButton(onClick = { viewModel.submitAddUser { onBack() } })
+            {
+                Text(
+                    text = "Save User",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontFamily = FontFamily.SansSerif
+                )
+            }
         }
     }
 }

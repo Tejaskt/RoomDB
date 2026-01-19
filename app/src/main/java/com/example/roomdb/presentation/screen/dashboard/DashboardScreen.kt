@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,7 +69,8 @@ fun DashboardScreen(
     viewModel: DashboardViewModel,
     onAddClick: () -> Unit,
     onUserClick: (Int) -> Unit,
-    onEditUserClick: (Int) -> Unit
+    onEditUserClick: (Int) -> Unit,
+    onRemoteUsersClick: () -> Unit
 ) {
     val state by viewModel.usersState.collectAsState()
 
@@ -108,8 +110,7 @@ fun DashboardScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Text(
-                        "Welcome",
+                    Text( stringResource(R.string.title),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -125,7 +126,7 @@ fun DashboardScreen(
                 },
                 actions = {
 
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = onRemoteUsersClick ) {
                         Icon(
                             imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "Localized description",

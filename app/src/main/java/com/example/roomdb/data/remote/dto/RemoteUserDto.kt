@@ -1,3 +1,8 @@
 package com.example.roomdb.data.remote.dto
 
-data object RemoteUserDto
+data class RemoteUserDto(
+    val id: Int,
+    val name: String,
+    val username: String,
+    val email: String,
+)

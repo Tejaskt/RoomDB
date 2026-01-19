@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -86,116 +86,121 @@ fun EditUserScreen(
             var college by remember(user.id) { mutableStateOf(user.collage) }
             var stream by remember(user.id) { mutableStateOf(user.stream) }
 
-            Column(
+
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color = Color.LightGray),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            )
+            {
+                item {
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                ) {
-                    IconButton(
-                        onClick = onBack,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .size(26.dp),
-                        content = {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "BackArrow"
-                            )
-                        },
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
                     )
+                    {
+                        IconButton(
+                            onClick = onBack,
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp)
+                                .size(26.dp),
+                            content = {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "BackArrow"
+                                )
+                            },
+                        )
 
-                    Text(
-                        text = "Edit User",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(22.dp))
-                Image(
-                    painter = painterResource(R.drawable.profilepic),
-                    contentDescription = "Profile Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(120.dp)
-                        .border(4.dp, Color(0xFF54787c), CircleShape)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    name,
-                    { name = it },
-                    label = { Text("Name") },
-                    isError = formState.nameError != null
-                )
-                formState.nameError?.let { Text(text = it, color = Color.Red) }
-
-                OutlinedTextField(
-                    email,
-                    { email = it },
-                    label = { Text("Email") },
-                    isError = formState.emailError != null
-                )
-                formState.emailError?.let { Text(text = it, color = Color.Red) }
-
-                OutlinedTextField(
-                    age,
-                    { age = it },
-                    label = { Text("Age") },
-                    isError = formState.ageError != null
-                )
-                formState.ageError?.let { Text(text = it, color = Color.Red) }
-
-                OutlinedTextField(
-                    college,
-                    { college = it },
-                    label = { Text("College") },
-                    isError = formState.collegeError != null
-                )
-                formState.collegeError?.let { Text(text = it, color = Color.Red) }
-
-                OutlinedTextField(
-                    stream,
-                    { stream = it },
-                    label = { Text("Stream") },
-                    isError = formState.streamError != null
-                )
-                formState.streamError?.let { Text(text = it, color = Color.Red) }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                ElevatedButton(
-                    onClick = {
-                        viewModel.submitEditUser(
-                            userId = user.id,
-                            name = name,
-                            email = email,
-                            age = age,
-                            college = college,
-                            stream = stream,
-                            onSuccess = onBack
+                        Text(
+                            text = "Edit User",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.Center
                         )
                     }
-                ) {
-                    Text(
-                        text = "Update User",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontFamily = FontFamily.SansSerif
+
+                    Spacer(modifier = Modifier.height(22.dp))
+                    Image(
+                        painter = painterResource(R.drawable.profilepic),
+                        contentDescription = "Profile Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(120.dp)
+                            .border(4.dp, Color(0xFF54787c), CircleShape)
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        name,
+                        { name = it },
+                        label = { Text("Name") },
+                        isError = formState.nameError != null
+                    )
+                    formState.nameError?.let { Text(text = it, color = Color.Red) }
+
+                    OutlinedTextField(
+                        email,
+                        { email = it },
+                        label = { Text("Email") },
+                        isError = formState.emailError != null
+                    )
+                    formState.emailError?.let { Text(text = it, color = Color.Red) }
+
+                    OutlinedTextField(
+                        age,
+                        { age = it },
+                        label = { Text("Age") },
+                        isError = formState.ageError != null
+                    )
+                    formState.ageError?.let { Text(text = it, color = Color.Red) }
+
+                    OutlinedTextField(
+                        college,
+                        { college = it },
+                        label = { Text("College") },
+                        isError = formState.collegeError != null
+                    )
+                    formState.collegeError?.let { Text(text = it, color = Color.Red) }
+
+                    OutlinedTextField(
+                        stream,
+                        { stream = it },
+                        label = { Text("Stream") },
+                        isError = formState.streamError != null
+                    )
+                    formState.streamError?.let { Text(text = it, color = Color.Red) }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    ElevatedButton(
+                        onClick = {
+                            viewModel.submitEditUser(
+                                userId = user.id,
+                                name = name,
+                                email = email,
+                                age = age,
+                                college = college,
+                                stream = stream,
+                                onSuccess = onBack
+                            )
+                        }
+                    ) {
+                        Text(
+                            text = "Update User",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontFamily = FontFamily.SansSerif
+                        )
+                    }
                 }
             }
         }
