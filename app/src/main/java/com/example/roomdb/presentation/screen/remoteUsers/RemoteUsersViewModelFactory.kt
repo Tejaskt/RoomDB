@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen
+package com.example.roomdb.presentation.screen.remoteUsers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

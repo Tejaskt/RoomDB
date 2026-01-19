@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.roomdb.presentation.model.RemoteUser
 import com.example.roomdb.presentation.utils.LoadingView
-import com.example.roomdb.presentation.screen.RemoteUsersViewModel
+import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModel
 import com.example.roomdb.presentation.utils.UiState
 
 @Composable

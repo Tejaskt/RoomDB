@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.roomdb.data.repository.RemoteUserRepositoryImpl
-import com.example.roomdb.presentation.screen.RemoteUsersViewModel
-import com.example.roomdb.presentation.screen.RemoteUsersViewModelFactory
+import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModel
+import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModelFactory
 import com.example.roomdb.presentation.screen.addEditUser.AddUserScreen
 import com.example.roomdb.presentation.screen.addEditUser.EditUserScreen
 import com.example.roomdb.presentation.screen.dashboard.DashboardScreen
