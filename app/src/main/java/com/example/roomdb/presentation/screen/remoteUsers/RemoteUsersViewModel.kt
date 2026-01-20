@@ -6,13 +6,17 @@ import com.example.roomdb.data.repository.RemoteUserRepository
 import com.example.roomdb.presentation.model.RemoteUser
 import com.example.roomdb.presentation.utils.NetworkResult
 import com.example.roomdb.presentation.utils.SyncState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RemoteUsersViewModel (
+
+@HiltViewModel
+class RemoteUsersViewModel @Inject constructor (
     private val repository: RemoteUserRepository
 ) : ViewModel() {
 

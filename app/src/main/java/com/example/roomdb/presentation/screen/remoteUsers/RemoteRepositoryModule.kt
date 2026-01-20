@@ -1,23 +1,21 @@
-package com.example.roomdb.di
+package com.example.roomdb.presentation.screen.remoteUsers
 
-import com.example.roomdb.data.local.dao.UserDao
 import com.example.roomdb.data.repository.RemoteUserRepository
 import com.example.roomdb.data.repository.RemoteUserRepositoryImpl
-import com.example.roomdb.data.repository.UserRepository
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+abstract class RemoteRepositoryModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideUserRepository(
-        dao: UserDao
-    ) : UserRepository = UserRepository(dao)
+    abstract fun bindRemoteUserRepository(
+        impl: RemoteUserRepositoryImpl
+    ): RemoteUserRepository
+
 }

@@ -1,16 +1,15 @@
 package com.example.roomdb.data.local
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.roomdb.data.local.dao.RemoteUserDao
 import com.example.roomdb.data.local.dao.UserDao
+import com.example.roomdb.data.local.entity.RemoteUserEntity
 import com.example.roomdb.data.local.entity.User
 
 @Database(
-    entities =[User::class],
-    version = 1
+    entities = [User::class, RemoteUserEntity::class],
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase(){
 
@@ -20,7 +19,7 @@ abstract class AppDatabase : RoomDatabase(){
     // dao for remote user database
     abstract fun remoteUserDao() : RemoteUserDao
 
-    /* removed manual creation because of hilt.*/
+    /* removed manual creation because of hilt.
 
    companion object{
        @Volatile
@@ -40,6 +39,6 @@ abstract class AppDatabase : RoomDatabase(){
            }
        }
 
-   }
+   } */
 
 }

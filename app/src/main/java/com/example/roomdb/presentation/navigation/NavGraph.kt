@@ -1,15 +1,10 @@
 package com.example.roomdb.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.roomdb.data.local.AppDatabase
-import com.example.roomdb.data.remote.api.RetrofitClient
-import com.example.roomdb.data.repository.RemoteUserRepositoryImpl
 import com.example.roomdb.presentation.screen.addEditUser.AddUserScreen
 import com.example.roomdb.presentation.screen.addEditUser.EditUserScreen
 import com.example.roomdb.presentation.screen.dashboard.DashboardScreen
@@ -17,7 +12,6 @@ import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.presentation.screen.detail.UserDetailScreen
 import com.example.roomdb.presentation.screen.remoteUsers.RemoteUserScreen
 import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModel
-import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModelFactory
 
 @Composable
 fun AppNavGraph (
@@ -95,6 +89,7 @@ fun AppNavGraph (
         }
         composable(Routes.REMOTE_USERS){
 
+            /* with out hilt boilerplate code
             val context = LocalContext.current
             val database = remember {
                 AppDatabase.getDatabase(context)
@@ -113,6 +108,9 @@ fun AppNavGraph (
 
             val viewModel: RemoteUsersViewModel = viewModel(factory = factory)
 
+            */
+
+            val viewModel: RemoteUsersViewModel = hiltViewModel()
             RemoteUserScreen(viewModel = viewModel)
 
         }

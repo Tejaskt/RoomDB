@@ -3,8 +3,10 @@ package com.example.roomdb.data.repository
 import com.example.roomdb.data.local.dao.UserDao
 import com.example.roomdb.data.local.entity.User
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserRepository(
+class UserRepository (
     private val userDao: UserDao
 ) {
     val users : Flow<List<User>> = userDao.getAllUsers()

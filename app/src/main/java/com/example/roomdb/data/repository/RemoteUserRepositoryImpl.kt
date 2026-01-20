@@ -10,8 +10,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RemoteUserRepositoryImpl(
+@Singleton
+class RemoteUserRepositoryImpl @Inject constructor(
     private val api : UserApi,
     private val dao: RemoteUserDao
 ) : RemoteUserRepository {
