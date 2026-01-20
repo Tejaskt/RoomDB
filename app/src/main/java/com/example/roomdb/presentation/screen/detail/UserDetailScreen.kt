@@ -41,6 +41,7 @@ import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.screen.ProfileItem
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
+import com.example.roomdb.presentation.utils.LoadingView
 import com.example.roomdb.presentation.utils.UiState
 
 @Composable
@@ -53,12 +54,7 @@ fun UserDetailScreen(
     when(state) {
 
         is UiState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                CircularProgressIndicator()
-            }
+            LoadingView()
         }
         is UiState.Error -> {
             Box(

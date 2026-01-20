@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
+import com.example.roomdb.presentation.utils.LoadingView
 import com.example.roomdb.presentation.utils.UiEvent
 import com.example.roomdb.presentation.utils.UiState
 
@@ -144,7 +145,7 @@ fun DashboardScreen(
     ) { padding ->
 
         when (state) {
-            is UiState.Loading -> CircularProgressIndicator()
+            is UiState.Loading -> LoadingView()
 
             is UiState.Error -> Text("Something went wrong")
 

@@ -11,8 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,16 +25,62 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.utils.LoadingView
-import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModel
-import com.example.roomdb.presentation.utils.UiState
+import com.example.roomdb.presentation.utils.SyncState
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RemoteUserScreen(viewModel: RemoteUsersViewModel) {
-    val state by viewModel.usersState.collectAsState()
 
+    val users by viewModel.users.collectAsState()
+    val syncState by viewModel.syncState.collectAsState()
+
+    val isRefreshing = syncState is SyncState.Syncing
+
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = { viewModel.sync() }
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState)
+    ){
+
+        UserList(users)
+
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
+
+        when(syncState){
+            is SyncState.Syncing -> {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            is SyncState.Error -> {
+                Text(
+                    text = (syncState as SyncState.Error).message,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(56.dp)
+                )
+            }
+
+            else -> Unit
+
+        }
+    }
+
+    /* not to do this because sync in not ui state.
     when(state){
         is UiState.Loading -> {
             LoadingView()
@@ -45,7 +96,7 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel) {
                 users = (state as UiState.Success<List<RemoteUser>>).data
             )
         }
-    }
+    } */
 
 }
 

@@ -5,33 +5,43 @@ import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.RemoteUserRepository
 import com.example.roomdb.presentation.model.RemoteUser
 import com.example.roomdb.presentation.utils.NetworkResult
-import com.example.roomdb.presentation.utils.UiState
+import com.example.roomdb.presentation.utils.SyncState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class RemoteUsersViewModel (
     private val repository: RemoteUserRepository
 ) : ViewModel() {
 
-    private val _usersState = MutableStateFlow<UiState<List<RemoteUser>>>(UiState.Loading)
-    val usersState : StateFlow<UiState<List<RemoteUser>>> = _usersState
+    val users: StateFlow<List<RemoteUser>> =
+        repository.observeUsers()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                emptyList()
+            )
+
+    private val _syncState = MutableStateFlow<SyncState>(SyncState.Idle)
+    val syncState : StateFlow<SyncState> = _syncState
+
 
     init {
-        fetchUsers()
+      sync()
     }
 
-    fun fetchUsers(){
+    fun sync(){
         viewModelScope.launch {
-            _usersState.value = UiState.Loading
+            _syncState.value = SyncState.Syncing
 
-            when(val result = repository.fetchUsers()){
-
+            when(val result = repository.syncUsers()){
                 is NetworkResult.Success -> {
-                    _usersState.value = UiState.Success(result.data)
+                    _syncState.value = SyncState.Success
                 }
                 is NetworkResult.Error -> {
-                    _usersState.value = UiState.Error(result.message)
+                    _syncState.value = SyncState.Error(result.message)
                 }
             }
         }
