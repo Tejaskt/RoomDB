@@ -16,7 +16,6 @@ interface UserDao{
 
     @Query("SELECT * FROM users WHERE id = :id")
 
-
     fun getUserById(id: Int) : Flow<User?>
 
     @Insert

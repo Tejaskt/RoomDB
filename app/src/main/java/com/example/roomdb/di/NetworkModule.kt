@@ -43,10 +43,15 @@ object NetworkModule {
             .build()
 
 
+    /*
+    * Retrofit generates the implementation of UserApi at runtime.
+    * Hilt only provides and injects that generated object.
+    * */
     @Provides
     @Singleton
     fun provideUserApi(
         retrofit: Retrofit
     ): UserApi =
         retrofit.create(UserApi::class.java)
+
 }

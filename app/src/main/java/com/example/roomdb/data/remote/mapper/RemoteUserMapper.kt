@@ -5,7 +5,15 @@ import com.example.roomdb.data.remote.dto.RemoteUserDto
 import com.example.roomdb.presentation.model.RemoteUser
 
 
-// convert remoteUserDto to remote user
+/* definition
+* A mapper isolates API and database changes from the UI by translating unstable data models into stable models.
+* */
+
+/* The mapper exists to translate between layers.
+* api -> dto | dto -> entity | entity -> UI
+* convert remoteUserDto to remote user
+*/
+
 fun RemoteUserDto.toRemoteUser() : RemoteUser {
     return RemoteUser(
         id = id,

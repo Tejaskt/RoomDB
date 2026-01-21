@@ -5,9 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -136,7 +140,7 @@ private fun PrevDashboardScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable { /* do something */}
+                            .clickable { /* do something */ }
                         ,
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         shape = RoundedCornerShape(corner = CornerSize(16.dp))
@@ -279,44 +283,39 @@ private fun PrevUserDetailScreen() {
 @Composable
 fun ProfileItem(icon: ImageVector, label: String, value: String) {
 
-    Card(
-        modifier = Modifier.padding(horizontal = 12.dp),
-        elevation = CardDefaults.cardElevation(8.dp),
-        shape = RoundedCornerShape(corner = CornerSize(16.dp))
-
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(start = 85.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-
-            ) {
-            Icon(
-                icon,
-                null,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(32.dp)
-            )
-
-            Spacer(modifier = Modifier.width(32.dp))
-
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.labelLarge,
+        Card(
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+        ) {
+            Row(
+                modifier = Modifier.padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround,
+                ) {
+                Icon(
+                    icon,
+                    null,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(32.dp)
                 )
-                Text(
-                    text = value,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+
+//                Spacer(modifier = Modifier.weight())
+
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    Text(
+                        text = value,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             }
         }
-    }
 }
 
 @Preview(name= "Add User Screen", showBackground = true)
@@ -339,7 +338,9 @@ private fun PrevAddUserScreen() {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowBack,
                 "Edit Profile",
-                modifier = Modifier.padding(horizontal = 10.dp).size(26.dp)
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .size(26.dp)
             )
 
             Text(
