@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.remoteUsers
+package com.example.roomdb.di
 
 import com.example.roomdb.data.repository.RemoteUserRepository
 import com.example.roomdb.data.repository.RemoteUserRepositoryImpl

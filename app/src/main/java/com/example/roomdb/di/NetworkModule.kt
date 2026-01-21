@@ -42,6 +42,7 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+
     @Provides
     @Singleton
     fun provideUserApi(

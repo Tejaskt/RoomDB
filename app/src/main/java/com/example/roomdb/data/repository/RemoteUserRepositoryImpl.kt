@@ -46,13 +46,13 @@ class RemoteUserRepositoryImpl @Inject constructor(
             NetworkResult.Success(Unit)
         }
         catch (e : IOException){
-            NetworkResult.Error("NO Internet Connection! : ${e.message}")
+            NetworkResult.Error("NO Internet Connection!")
         }
         catch (e : HttpException){
             NetworkResult.Error("Server Error : ${e.code()}")
         }
         catch (e: Exception){
-            NetworkResult.Error("Something Went Wrong! : ${e.message}")
+            NetworkResult.Error("Something Went Wrong!")
         }
     }
 }
