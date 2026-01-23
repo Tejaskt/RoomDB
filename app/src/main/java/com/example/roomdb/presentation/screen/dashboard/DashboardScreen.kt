@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -55,11 +57,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.utils.LoadingView
+import com.example.roomdb.presentation.utils.ScreenSpace
 import com.example.roomdb.presentation.utils.UiEvent
 import com.example.roomdb.presentation.utils.UiState
 
@@ -151,18 +155,18 @@ fun DashboardScreen(
             is UiState.Success -> {
                 val users = (state as UiState.Success<List<User>>).data
                 LazyColumn(
+                    contentPadding = PaddingValues(10.dp),
                     modifier = Modifier
                         .padding(padding)
                         .background(color = Color.LightGray)
-                        .fillMaxHeight()
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     items(users) { user ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                                .clickable { onUserClick(user.id) }
-                                .padding(8.dp),
+                                .clickable { onUserClick(user.id) },
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                             shape = RoundedCornerShape(corner = CornerSize(16.dp)),
 
@@ -232,3 +236,136 @@ fun DashboardScreen(
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Dash Board Screen", showSystemUi = true)
+@Composable
+private fun PrevDashboardScreen(
+) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    val users1 = listOf(
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
+    )
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+
+        floatingActionButton = {
+            FloatingActionButton(onClick = {}) {
+                Icon(Icons.Filled.Add, "Add User")
+            }
+        },
+
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        "Welcome",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /* do something */ }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /* do something */ }) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
+
+
+        ) { padding ->
+
+            LazyColumn(
+                contentPadding = PaddingValues(10.dp),
+                modifier = Modifier
+                    .padding(padding)
+                    .background(color = Color.LightGray)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(ScreenSpace.Vertical_Space)
+            ) {
+                items(users1) { user ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+//                            .padding(8.dp)
+                            .clickable { /* do something */ }
+                        ,
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.profilepic),
+                                contentDescription = "profile Image",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .clip(CircleShape)
+                                    .border(2.dp, Color.DarkGray, CircleShape)
+                            )
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .padding(start = 8.dp),
+                                verticalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                Text(
+                                    text = user.name,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        .padding(bottom = 2.dp)
+                                )
+
+                                Text(
+                                    text = user.email,
+                                    fontFamily = FontFamily.Cursive,
+                                    modifier = Modifier
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            IconButton(
+                                modifier = Modifier,
+                                onClick = {  }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Delete,
+                                    contentDescription = "Delete"
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+}
+

@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.roomdb.presentation.model.RemoteUser
+import com.example.roomdb.presentation.utils.ScreenSpace
 import com.example.roomdb.presentation.utils.SyncState
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -36,8 +37,9 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel) {
     val users by viewModel.users.collectAsState()
     val syncState by viewModel.syncState.collectAsState()
 
-    val isRefreshing = syncState is SyncState.Syncing
 
+    // for refresh.
+    val isRefreshing = syncState is SyncState.Syncing
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = { viewModel.sync() }
@@ -105,8 +107,8 @@ private fun UserList(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        contentPadding = PaddingValues(ScreenSpace.Horizontal_Space),
+        verticalArrangement = Arrangement.spacedBy(ScreenSpace.Vertical_Space)
     ) {
         items(users) { user ->
             UserItem(user)
@@ -119,7 +121,7 @@ private fun UserItem(user: RemoteUser) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(ScreenSpace.Horizontal_Space)) {
             Text(
                 text = user.name,
                 style = MaterialTheme.typography.titleMedium

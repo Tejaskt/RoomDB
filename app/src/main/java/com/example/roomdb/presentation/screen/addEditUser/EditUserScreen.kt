@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
+import com.example.roomdb.presentation.utils.LoadingView
 import com.example.roomdb.presentation.utils.UiState
 
 @Composable
@@ -55,12 +56,7 @@ fun EditUserScreen(
     when (state) {
 
         is UiState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+            LoadingView()
         }
 
         is UiState.Error -> {
@@ -76,12 +72,10 @@ fun EditUserScreen(
         }
 
         is UiState.Success -> {
-            val user = (state as UiState.Success<User>).data
 
+            val user = (state as UiState.Success<User>).data
             var name by remember(user.id) { mutableStateOf(user.name) }
-            var email by remember(
-                user.id
-            ) { mutableStateOf(user.email) }
+            var email by remember(user.id) { mutableStateOf(user.email) }
             var age by remember(user.id) { mutableStateOf(user.age.toString()) }
             var college by remember(user.id) { mutableStateOf(user.collage) }
             var stream by remember(user.id) { mutableStateOf(user.stream) }

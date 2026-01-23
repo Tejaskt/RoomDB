@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
+import com.example.roomdb.presentation.screen.addEditUser.UserFormState
 import com.example.roomdb.presentation.utils.UiEvent
 import com.example.roomdb.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,10 +19,9 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.example.roomdb.presentation.screen.addEditUser.UserFormState
-import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
@@ -41,12 +41,13 @@ class DashboardViewModel @Inject constructor(
             .map { UiState.Success(it) as UiState<List<User>> }
             .stateIn(
                 viewModelScope,
-                SharingStarted.Eagerly,
+                SharingStarted.WhileSubscribed(5_000),
                 UiState.Loading
             )
 
     /* ---------------- SELECTED USER ---------------- */
 
+    /* savedStateHandle : A small, lifecycle-safe key–value store owned by the ViewModel */
     private val _selectedUserId =
         savedStateHandle.getStateFlow<Int?>("selected_user_id", null)
 
@@ -110,9 +111,14 @@ class DashboardViewModel @Inject constructor(
                     stream = validated.stream
                 )
             )
-            _addFormState.value = UserFormState()
+            removeErrorState()
             onSuccess()
         }
+    }
+
+    // on back press remove the error state in user form.
+    fun removeErrorState(){
+        _addFormState.value = UserFormState()
     }
 
     fun updateAddForm(update: (UserFormState) -> UserFormState) {

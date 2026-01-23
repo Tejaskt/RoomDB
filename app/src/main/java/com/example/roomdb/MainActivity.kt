@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
         val factory = DashboardViewModelFactory(repository)
          */
 
-
         @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         setContent {
             RoomDBTheme {
