@@ -1,5 +1,6 @@
 package com.example.roomdb.presentation.screen.dashboard
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -368,4 +369,5 @@ private fun PrevDashboardScreen(
             }
         }
 }
+
 
