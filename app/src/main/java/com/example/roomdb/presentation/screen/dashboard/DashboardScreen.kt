@@ -1,6 +1,5 @@
 package com.example.roomdb.presentation.screen.dashboard
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -140,7 +139,7 @@ fun DashboardScreen(
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior,
+                scrollBehavior = scrollBehavior
             )
         },
 
@@ -246,11 +245,11 @@ private fun PrevDashboardScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val users1 = listOf(
-        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
-        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
-        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
-        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
-        User(name = "Tejas", email = "kt@gmail.com", age = 24, collage = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, college = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, college = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, college = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, college = "Marwadi", stream = "Mca"),
+        User(name = "Tejas", email = "kt@gmail.com", age = 24, college = "Marwadi", stream = "Mca"),
     )
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

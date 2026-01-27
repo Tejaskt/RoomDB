@@ -76,7 +76,7 @@ fun EditUserScreen(
             var name by remember(user.id) { mutableStateOf(user.name) }
             var email by remember(user.id) { mutableStateOf(user.email) }
             var age by remember(user.id) { mutableStateOf(user.age.toString()) }
-            var college by remember(user.id) { mutableStateOf(user.collage) }
+            var college by remember(user.id) { mutableStateOf(user.college) }
             var stream by remember(user.id) { mutableStateOf(user.stream) }
 
 

@@ -87,7 +87,8 @@ fun UserDetailScreen(
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(ScreenSpace.Vertical_Space)
-                ) {
+                )
+                {
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -135,7 +136,7 @@ fun UserDetailScreen(
                         verticalArrangement = Arrangement.spacedBy(ScreenSpace.Vertical_Space)
                     ) {
                         ProfileItem(Icons.Filled.Email, "Email", it.email)
-                        ProfileItem(Icons.Filled.LocationOn, "College", it.collage)
+                        ProfileItem(Icons.Filled.LocationOn, "College", it.college)
                         ProfileItem(Icons.Filled.PlayArrow, "Stream", it.stream)
                     }
 

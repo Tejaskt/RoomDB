@@ -1,5 +1,7 @@
 package com.example.roomdb.presentation.screen.addEditUser
 
+import com.example.roomdb.data.local.entity.User
+
 data class UserFormState(
     val name: String = "",
     val email: String = "",
@@ -13,3 +15,17 @@ data class UserFormState(
     val collegeError: String? = null,
     val streamError: String? = null
 )
+
+fun UserFormState.hasError(): Boolean =
+    listOf(nameError, emailError, ageError, collegeError, streamError)
+        .any { it != null }
+
+fun UserFormState.toUser(id: Int = 0): User =
+    User(
+        id = id,
+        name = name,
+        email = email,
+        age = age.toInt(),
+        college = college,
+        stream = stream
+    )

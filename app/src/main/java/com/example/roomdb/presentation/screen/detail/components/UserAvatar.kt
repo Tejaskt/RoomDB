@@ -9,24 +9,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.roomdb.ui.theme.User_Avatar
 
 @Composable
 fun UserAvatar(
-    initials: String
+    initials: String,
 ) {
+
     Box(
         modifier = Modifier
             .size(96.dp)
+            .shadow(12.dp,CircleShape,clip = false)
             .clip(CircleShape)
-            .background(Color(0xFF4D8DFF)),
-        contentAlignment = Alignment.Center
+            .background(User_Avatar),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = initials,
             style = MaterialTheme.typography.headlineMedium,
-            color = Color.White
+            color = Color.White,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

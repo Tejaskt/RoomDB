@@ -87,7 +87,7 @@ dependencies {
     implementation(libs.logging.interceptor)
 
     // pull to refresh
-    implementation("androidx.compose.material:material:1.6.8")
+    implementation(libs.androidx.compose.material)
 
 
 }

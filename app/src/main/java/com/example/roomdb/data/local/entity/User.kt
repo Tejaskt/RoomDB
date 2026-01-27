@@ -10,6 +10,6 @@ data class User(
     val name : String,
     val email : String,
     val age : Int,
-    val collage : String,
+    val college : String,
     val stream : String
 )

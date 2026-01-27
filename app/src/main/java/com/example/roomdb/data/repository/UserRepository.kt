@@ -12,6 +12,8 @@ class UserRepository (
     val users : Flow<List<User>> = userDao.getAllUsers()
 
     fun getUserById(id: Int) : Flow<User?> = userDao.getUserById(id)
+
+    val usersCount: Flow<Int> = userDao.observeUserCount()
     suspend fun insertUser(user: User){
         userDao.insertUser(user)
     }
