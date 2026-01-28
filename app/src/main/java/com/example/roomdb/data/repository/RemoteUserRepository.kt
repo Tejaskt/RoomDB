@@ -1,7 +1,7 @@
 package com.example.roomdb.data.repository
 
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.utils.NetworkResult
+import com.example.roomdb.presentation.screen.remoteUsers.components.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteUserRepository {

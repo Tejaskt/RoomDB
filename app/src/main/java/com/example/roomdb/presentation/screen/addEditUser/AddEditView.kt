@@ -1,12 +1,16 @@
 package com.example.roomdb.presentation.screen.addEditUser
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -14,9 +18,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,9 +31,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.roomdb.presentation.screen.addEditUser.components.AddEditMode
 import com.example.roomdb.presentation.screen.addEditUser.components.FormTextField
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
@@ -159,101 +171,3 @@ fun AddEditView(
         }
     }
 }
-
-
-
-// sample
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PrevAddEditView(
-    mode: AddEditMode = AddEditMode.ADD,
-    onBack: () -> Unit = {}
-) {
-//    val addState by viewModel.addFormState.collectAsState()
-//    val editState by viewModel.editFormState.collectAsState()
-
-
-    AppScaffold(
-        topBarContent = {
-            AppTopBar(
-                title = if (mode == AddEditMode.ADD) "Add User" else "Edit User",
-                subtitle = if (mode == AddEditMode.ADD)
-                    "Create a new user account"
-                else
-                    "Update user information",
-                icon = {
-                    IconButton(onClick = onBack,
-                        modifier = Modifier.wrapContentWidth(align = Alignment.End)) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_arrow)
-                        )
-                    }
-                }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {}, shape = FloatingActionButtonDefaults.largeShape) {
-                Icon(painter = painterResource(R.drawable.icon_save),contentDescription = null)
-            }
-        }
-    ) { padding ->
-
-        LazyColumn(
-            modifier = Modifier
-                .padding(padding)
-                .padding(horizontal = ScreenSpace.Horizontal_Space),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                FormTextField(
-                    label = "Full Name *",
-                    value = "Tejas kanazriya",
-                    placeholder = "e.g., John Doe",
-//                    error = "addState.nameError",
-                    onValueChange = {}
-                )
-
-                FormTextField(
-                    label = "Email Address *",
-                    value = "Tejaskt@gmail.com",
-                    placeholder = "e.g., john@example.com",
-//                    error = "addState.emailError",
-                    onValueChange = {}
-                )
-
-                FormTextField(
-                    label = "Age *",
-                    value = "24", // rename later if needed
-                    placeholder = "e.g., +1 (555) 123-4567",
-//                    error = "addState.ageError",
-                    onValueChange = {}
-                )
-
-                FormTextField(
-                    label = "College *",
-                    value = "Marwadi ", // rename later if needed
-                    placeholder = "e.g., University",
-//                    error = "addState.ageError",
-                    onValueChange = {}
-                )
-
-                FormTextField(
-                    label = "Stream *",
-                    value = "MCA", // rename later if needed
-                    placeholder = "e.g., MCA",
-//                    error = "addState.ageError",
-                    onValueChange = {}
-                )
-
-            }
-        }
-    }
-}
-
-*/

@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.roomdb.presentation.model.RemoteUser
 import com.example.roomdb.presentation.utils.ScreenSpace
-import com.example.roomdb.presentation.utils.SyncState
+import com.example.roomdb.presentation.screen.remoteUsers.components.SyncState
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

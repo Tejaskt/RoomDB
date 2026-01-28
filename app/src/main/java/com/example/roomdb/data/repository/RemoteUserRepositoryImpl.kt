@@ -5,7 +5,7 @@ import com.example.roomdb.data.remote.api.UserApi
 import com.example.roomdb.data.remote.mapper.toEntity
 import com.example.roomdb.data.remote.mapper.toUi
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.utils.NetworkResult
+import com.example.roomdb.presentation.screen.remoteUsers.components.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException

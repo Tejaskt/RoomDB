@@ -45,18 +45,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.data.local.entity.User
+import com.example.roomdb.presentation.screen.dashboard.components.UiEvent
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
 import com.example.roomdb.presentation.utils.LoadingView
 import com.example.roomdb.presentation.utils.ScreenSpace
-import com.example.roomdb.presentation.utils.UiEvent
 import com.example.roomdb.presentation.utils.UiState
 import com.example.roomdb.ui.theme.App_Button
 import com.example.roomdb.ui.theme.ICON_Red
 import com.example.roomdb.ui.theme.PurpleGrey40
 import com.example.roomdb.ui.theme.User_Avatar
 
-//@Preview(showBackground = true, showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardView(
@@ -109,7 +108,7 @@ fun DashboardView(
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
-        modifier = Modifier.fillMaxSize().safeDrawingPadding()
+//        modifier = Modifier.fillMaxSize().safeDrawingPadding()
 
         ) { paddingValues ->
 
@@ -125,6 +124,8 @@ fun DashboardView(
                 LazyColumn(
                     modifier = Modifier
                         .padding(paddingValues),
+//                      .consumeWindowInsets(paddingValues),
+//                  contentPadding = paddingValues
                     contentPadding = PaddingValues(ScreenSpace.Horizontal_Space)
                 ) {
                     items(users) { user ->
@@ -156,7 +157,7 @@ fun UserCard(
             .padding(vertical = 6.dp),
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(2.dp),
-        colors = CardDefaults.cardColors(containerColor = White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -194,7 +195,7 @@ fun UserCard(
             Spacer(modifier = Modifier.width(8.dp))
 
             IconButton(onClick = {onEditUserClick(user.id)}) {
-                Icon(Icons.Default.Edit, contentDescription = "Edit", tint = PurpleGrey40)
+                Icon(Icons.Default.Edit, contentDescription = "Edit", tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             IconButton(onClick = onDeleteUserClick) {

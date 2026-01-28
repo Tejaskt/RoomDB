@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.RemoteUserRepository
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.utils.NetworkResult
-import com.example.roomdb.presentation.utils.SyncState
+import com.example.roomdb.presentation.screen.remoteUsers.components.NetworkResult
+import com.example.roomdb.presentation.screen.remoteUsers.components.SyncState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

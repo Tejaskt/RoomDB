@@ -88,7 +88,7 @@ fun UserDetailView(
                         .padding(padding)
                         .padding(horizontal = 16.dp)
                         .verticalScroll(rememberScrollState()),
-                  horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -151,47 +151,47 @@ fun PrevUserDetailView(
         }
     ) { padding ->
 
-                Column(
-                    modifier = Modifier
-                        .padding(padding)
-                        .padding(horizontal = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-                    Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-                    UserAvatar(
-                        initials = "Tejas"
-                            .split(" ")
-                            .take(2)
-                            .joinToString("") { it.first().toString() }
-                    )
+            UserAvatar(
+                initials = "Tejas"
+                    .split(" ")
+                    .take(2)
+                    .joinToString("") { it.first().toString() }
+            )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        text = "Tejas",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.ExtraBold
-                    )
+            Text(
+                text = "Tejas",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.ExtraBold
+            )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-                    InfoCard {
-                        InfoRow(Icons.Default.Email, "Email", "Tejaskt@gmail.com")
+            InfoCard {
+                InfoRow(Icons.Default.Email, "Email", "Tejaskt@gmail.com")
 
-                        HorizontalDivider(thickness = 2.dp)
+                HorizontalDivider(thickness = 2.dp)
 
-                        InfoRow(Icons.Default.Person, "Age", "24") // replace with phone later
+                InfoRow(Icons.Default.Person, "Age", "24") // replace with phone later
 
-                        HorizontalDivider(thickness = 2.dp)
+                HorizontalDivider(thickness = 2.dp)
 
-                        InfoRow(
-                            Icons.Default.LocationOn,
-                            "Member Since",
-                            "January 23, 2026"
-                        )
-                    }
-                }
+                InfoRow(
+                    Icons.Default.LocationOn,
+                    "Member Since",
+                    "January 23, 2026"
+                )
             }
         }
+    }
+}

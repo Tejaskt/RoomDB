@@ -5,10 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import com.example.roomdb.presentation.navigation.AppNavGraph
 import com.example.roomdb.ui.theme.RoomDBTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,17 +25,15 @@ class MainActivity : ComponentActivity() {
         @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         setContent {
             RoomDBTheme {
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .safeDrawingPadding()
-                ) { _ ->
-                    //val viewModel: DashboardViewModel = hiltViewModel()
-                    //AppNavGraph(viewModel)
+//                Scaffold(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                ) { _ ->
                     AppNavGraph()
-                }
+//                }
             }
         }
     }
 }
+
 

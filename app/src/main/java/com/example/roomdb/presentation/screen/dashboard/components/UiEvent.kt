@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.utils
+package com.example.roomdb.presentation.screen.dashboard.components
 
 import com.example.roomdb.data.local.entity.User
 

@@ -1,12 +1,11 @@
 package com.example.roomdb.presentation.screen.dashboard
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
-import com.example.roomdb.presentation.utils.UiEvent
+import com.example.roomdb.presentation.screen.dashboard.components.UiEvent
 import com.example.roomdb.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

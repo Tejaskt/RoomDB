@@ -4,7 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.UserRepository
+import com.example.roomdb.presentation.screen.addEditUser.components.AddEditMode
 import com.example.roomdb.presentation.screen.addEditUser.components.AddEditUiEvent
+import com.example.roomdb.presentation.screen.addEditUser.components.UserFormState
+import com.example.roomdb.presentation.screen.addEditUser.components.hasError
+import com.example.roomdb.presentation.screen.addEditUser.components.toUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +25,7 @@ class AddEditUserViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val userId: Int? = savedStateHandle["userId"] ?: -1
+    private val userId: Int = savedStateHandle["userId"] ?: -1
 
     val mode: AddEditMode =
         if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
@@ -40,7 +44,7 @@ class AddEditUserViewModel @Inject constructor(
 
     private fun loadUser() {
         viewModelScope.launch {
-            repository.getUserById(userId!!)
+            repository.getUserById(userId)
                 .filterNotNull()
                 .collect { user ->
                     _formState.value = UserFormState(
@@ -69,7 +73,7 @@ class AddEditUserViewModel @Inject constructor(
             if (mode == AddEditMode.ADD) {
                 repository.insertUser(validated.toUser())
             } else {
-                repository.updateUser(validated.toUser(userId!!))
+                repository.updateUser(validated.toUser(userId))
             }
             _uiEvent.emit(AddEditUiEvent.Success)
         }
