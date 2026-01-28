@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AppScaffold(
     modifier: Modifier = Modifier,
-    snackbarHost: @Composable () -> Unit = {},
+    snackbarHost: @Composable (() -> Unit)? = null,
     topBarContent: @Composable () -> Unit,
     floatingActionButton: @Composable (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit
@@ -43,9 +43,10 @@ fun AppScaffold(
         floatingActionButton = {
             floatingActionButton?.invoke()
         },
-        modifier = Modifier
-            .fillMaxSize()
-            .safeDrawingPadding()
+        snackbarHost = {
+            snackbarHost?.invoke()
+        },
+        modifier = modifier
     ) { padding ->
         content(padding)
     }
@@ -58,7 +59,7 @@ fun AppTopBar(
     title: String,
     subtitle: String? = null,
     icon: (@Composable () -> Unit)? = null,
-    scrollBehavior: TopAppBarScrollBehavior? = null
+//    scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     Card(
         modifier = Modifier

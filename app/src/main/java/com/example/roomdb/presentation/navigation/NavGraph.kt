@@ -9,15 +9,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.roomdb.presentation.screen.addEditUser.AddEditView
 import com.example.roomdb.presentation.screen.dashboard.DashboardView
-import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.presentation.screen.detail.UserDetailView
 import com.example.roomdb.presentation.screen.remoteUsers.RemoteUserScreen
 import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModel
 
 @Composable
-fun AppNavGraph (
-    //viewmodel : DashboardViewModel
-){
+fun AppNavGraph (){
     val navController = rememberNavController()
 
     NavHost(
@@ -25,9 +22,8 @@ fun AppNavGraph (
         startDestination = Routes.DASHBOARD
     ){
         composable(Routes.DASHBOARD){
-            val viewModel: DashboardViewModel = hiltViewModel()
+
             DashboardView (
-                viewModel = viewModel,
                 onAddUserClick = {
                     navController.navigate(route = Routes.ADD_EDIT_USER){
                         launchSingleTop = true
@@ -35,14 +31,12 @@ fun AppNavGraph (
                     }
                 },
                 onUserDetailsClick = { userId ->
-                    //viewmodel.selectUser(userId)
                     navController.navigate("${Routes.USER_DETAIL}/$userId"){
                         launchSingleTop = true
                         restoreState = true
                     }
                 },
                 onEditUserClick = { userId ->
-                    //viewmodel.selectUser(userId)
                     navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId"){
                         launchSingleTop = true
                         restoreState = true
@@ -64,10 +58,8 @@ fun AppNavGraph (
                     defaultValue = -1
                 }
             )
-        ){
+        ) {
             AddEditView (
-//                mode = AddEditMode.ADD,
-//                viewModel = viewmodel,
                 onBack = {
                     navController.popBackStack(
                         route = Routes.DASHBOARD,
@@ -85,7 +77,6 @@ fun AppNavGraph (
             )
         ) {
             UserDetailView (
-                //viewModel = viewmodel,
                 onBack = {
                     navController.popBackStack(
                         route = Routes.DASHBOARD,

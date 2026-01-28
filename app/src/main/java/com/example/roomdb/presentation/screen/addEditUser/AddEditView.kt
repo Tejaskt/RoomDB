@@ -1,10 +1,19 @@
 package com.example.roomdb.presentation.screen.addEditUser
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -13,12 +22,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.presentation.screen.addEditUser.components.FormTextField
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
+import com.example.roomdb.ui.theme.App_Button
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,9 +41,7 @@ fun AddEditView(
     val state by viewModel.formState.collectAsState()
     val mode = viewModel.mode
 
-
-    //Navigation after success
-
+    //Navigation to dashboard after success
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect {
             onBack()
@@ -43,6 +53,7 @@ fun AddEditView(
         topBarContent = {
             AppTopBar(
                 title = if (mode == AddEditMode.ADD) "Add User" else "Edit User",
+                subtitle = if (mode == AddEditMode.ADD) "Create a new user account" else state.name,
                 icon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
@@ -61,9 +72,10 @@ fun AddEditView(
             item {
 
                 FormTextField(
-                    label = "Name",
+                    label = "Full Name *",
                     value = state.name,
                     error = state.nameError,
+                    placeholder = "e.g., John Doe",
                     onValueChange = { newValue ->
                         viewModel.onFieldChange { state ->
                             state.copy(name = newValue, nameError = null)
@@ -72,9 +84,10 @@ fun AddEditView(
                 )
 
                 FormTextField(
-                    label = "Email",
+                    label = "Email Address *",
                     value = state.email,
                     error = state.emailError,
+                    placeholder = "e.g., example@gmail.com",
                     onValueChange = { newValue ->
                         viewModel.onFieldChange { state ->
                             state.copy(email = newValue, emailError = null)
@@ -83,9 +96,10 @@ fun AddEditView(
                 )
 
                 FormTextField(
-                    label = "Age",
+                    label = "Age *",
                     value = state.age,
                     error = state.ageError,
+                    placeholder = "e.g., 22",
                     onValueChange = { newValue ->
                         viewModel.onFieldChange { state ->
                             state.copy(age = newValue, ageError = null)
@@ -94,9 +108,10 @@ fun AddEditView(
                 )
 
                 FormTextField(
-                    label = "College",
+                    label = "College *",
                     value = state.college,
                     error = state.collegeError,
+                    placeholder = "e.g., Oxford University",
                     onValueChange = { newValue ->
                         viewModel.onFieldChange { state ->
                             state.copy(college = newValue, collegeError = null)
@@ -105,9 +120,10 @@ fun AddEditView(
                 )
 
                 FormTextField(
-                    label = "Stream",
+                    label = "Stream *",
                     value = state.stream,
                     error = state.streamError,
+                    placeholder = "e.g., Psychology",
                     onValueChange = { newValue ->
                         viewModel.onFieldChange { state ->
                             state.copy(stream = newValue, streamError = null)
@@ -115,9 +131,30 @@ fun AddEditView(
                     }
                 )
 
-                Button(onClick = { viewModel.submit() }) {
-                    Text(if (mode == AddEditMode.ADD) "Create User" else "Update User")
-                }
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentWidth(Alignment.CenterHorizontally),
+                    onClick = { viewModel.submit() },
+                    colors = ButtonDefaults.buttonColors(containerColor = App_Button)
+                )
+                  {
+                      Row(
+                          horizontalArrangement = Arrangement.SpaceAround,
+                          verticalAlignment = Alignment.CenterVertically
+                      ) {
+                          Icon(
+                              Icons.Default.Done,
+                              contentDescription = null,
+                              modifier = Modifier.size(ButtonDefaults.IconSize),
+                              tint = Color.White
+                          )
+
+                          Spacer(Modifier.width(4.dp))
+
+                          Text(if (mode == AddEditMode.ADD) "Create User" else "Update User")
+                      }
+                  }
             }
         }
     }

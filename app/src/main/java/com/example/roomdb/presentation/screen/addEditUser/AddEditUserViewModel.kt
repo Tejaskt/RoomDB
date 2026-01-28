@@ -21,7 +21,7 @@ class AddEditUserViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val userId: Int? = savedStateHandle["userId"]
+    private val userId: Int? = savedStateHandle["userId"] ?: -1
 
     val mode: AddEditMode =
         if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
