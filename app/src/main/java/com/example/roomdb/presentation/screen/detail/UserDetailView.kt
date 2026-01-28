@@ -32,9 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
-import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.presentation.screen.detail.components.InfoCard
 import com.example.roomdb.presentation.screen.detail.components.InfoRow
 import com.example.roomdb.presentation.screen.detail.components.UserAvatar
@@ -46,10 +46,10 @@ import com.example.roomdb.presentation.utils.UiState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDetailView(
-    viewModel: DashboardViewModel,
     onBack: () -> Unit
 ) {
-    val state by viewModel.selectedUserState.collectAsState()
+    val viewModel: UserDetailViewModel = hiltViewModel()
+    val state by viewModel.userState.collectAsState()
 
     AppScaffold(
         topBarContent = {

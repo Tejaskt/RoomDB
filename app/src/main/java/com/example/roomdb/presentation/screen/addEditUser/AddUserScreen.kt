@@ -45,11 +45,13 @@ import androidx.compose.ui.unit.dp
 import com.example.roomdb.R
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 
+/*
 @Composable
 fun AddUserScreen(
     viewModel: DashboardViewModel,
     onBack: () -> Unit
-) {
+)
+{
 
     val formState by viewModel.addFormState.collectAsState()
 
@@ -179,7 +181,7 @@ fun AddUserScreen(
             }
         }
     }
-}
+}*/
 
 @Preview(name= "Add User Screen", showBackground = true)
 @Composable

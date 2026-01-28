@@ -43,7 +43,7 @@ import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.presentation.utils.LoadingView
 import com.example.roomdb.presentation.utils.UiState
-
+/*
 @Composable
 fun EditUserScreen(
     viewModel: DashboardViewModel,
@@ -199,3 +199,5 @@ fun EditUserScreen(
         }
     }
 }
+
+*/

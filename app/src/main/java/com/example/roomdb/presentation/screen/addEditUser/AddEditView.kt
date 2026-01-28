@@ -1,47 +1,24 @@
 package com.example.roomdb.presentation.screen.addEditUser
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.roomdb.R
-import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.screen.addEditUser.components.FormTextField
-import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
-import com.example.roomdb.presentation.utils.LoadingView
-import com.example.roomdb.presentation.utils.ScreenSpace
-import com.example.roomdb.presentation.utils.UiState
-import com.example.roomdb.ui.theme.Add_Edit_Button
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,6 +28,16 @@ fun AddEditView(
 ) {
     val state by viewModel.formState.collectAsState()
     val mode = viewModel.mode
+
+
+    //Navigation after success
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect {
+            onBack()
+        }
+    }
+
 
     AppScaffold(
         topBarContent = {
@@ -72,22 +59,64 @@ fun AddEditView(
         ) {
 
             item {
+
                 FormTextField(
                     label = "Name",
                     value = state.name,
                     error = state.nameError,
-                    onValueChange = {
-                        viewModel.updateForm { it.copy(name = it, nameError = null) }
+                    onValueChange = { newValue ->
+                        viewModel.onFieldChange { state ->
+                            state.copy(name = newValue, nameError = null)
+                        }
                     }
                 )
 
-                // repeat for other fields...
+                FormTextField(
+                    label = "Email",
+                    value = state.email,
+                    error = state.emailError,
+                    onValueChange = { newValue ->
+                        viewModel.onFieldChange { state ->
+                            state.copy(email = newValue, emailError = null)
+                        }
+                    }
+                )
 
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { viewModel.submit(onBack) }
-                ) {
-                    Text(if (mode == AddEditMode.ADD) "Create" else "Update")
+                FormTextField(
+                    label = "Age",
+                    value = state.age,
+                    error = state.ageError,
+                    onValueChange = { newValue ->
+                        viewModel.onFieldChange { state ->
+                            state.copy(age = newValue, ageError = null)
+                        }
+                    }
+                )
+
+                FormTextField(
+                    label = "College",
+                    value = state.college,
+                    error = state.collegeError,
+                    onValueChange = { newValue ->
+                        viewModel.onFieldChange { state ->
+                            state.copy(college = newValue, collegeError = null)
+                        }
+                    }
+                )
+
+                FormTextField(
+                    label = "Stream",
+                    value = state.stream,
+                    error = state.streamError,
+                    onValueChange = { newValue ->
+                        viewModel.onFieldChange { state ->
+                            state.copy(stream = newValue, streamError = null)
+                        }
+                    }
+                )
+
+                Button(onClick = { viewModel.submit() }) {
+                    Text(if (mode == AddEditMode.ADD) "Create User" else "Update User")
                 }
             }
         }
@@ -97,6 +126,7 @@ fun AddEditView(
 
 
 // sample
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -188,3 +218,5 @@ fun PrevAddEditView(
         }
     }
 }
+
+*/

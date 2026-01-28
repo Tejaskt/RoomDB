@@ -1,10 +1,7 @@
 package com.example.roomdb.di
 
 import com.example.roomdb.data.local.dao.UserDao
-import com.example.roomdb.data.repository.RemoteUserRepository
-import com.example.roomdb.data.repository.RemoteUserRepositoryImpl
 import com.example.roomdb.data.repository.UserRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.roomdb.presentation.screen.addEditUser.AddEditMode
 import com.example.roomdb.presentation.screen.addEditUser.AddEditView
 import com.example.roomdb.presentation.screen.dashboard.DashboardView
 import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
@@ -17,7 +16,7 @@ import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModel
 
 @Composable
 fun AppNavGraph (
-    viewmodel : DashboardViewModel
+    //viewmodel : DashboardViewModel
 ){
     val navController = rememberNavController()
 
@@ -26,8 +25,9 @@ fun AppNavGraph (
         startDestination = Routes.DASHBOARD
     ){
         composable(Routes.DASHBOARD){
+            val viewModel: DashboardViewModel = hiltViewModel()
             DashboardView (
-                viewModel = viewmodel,
+                viewModel = viewModel,
                 onAddUserClick = {
                     navController.navigate(route = Routes.ADD_EDIT_USER){
                         launchSingleTop = true
@@ -35,15 +35,15 @@ fun AppNavGraph (
                     }
                 },
                 onUserDetailsClick = { userId ->
-                    viewmodel.selectUser(userId)
-                    navController.navigate(route = Routes.USER_DETAIL){
+                    //viewmodel.selectUser(userId)
+                    navController.navigate("${Routes.USER_DETAIL}/$userId"){
                         launchSingleTop = true
                         restoreState = true
                     }
                 },
                 onEditUserClick = { userId ->
-                    viewmodel.selectUser(userId)
-                    navController.navigate(route = Routes.ADD_EDIT_USER){
+                    //viewmodel.selectUser(userId)
+                    navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId"){
                         launchSingleTop = true
                         restoreState = true
                     }
@@ -61,8 +61,7 @@ fun AppNavGraph (
             arguments = listOf(
                 navArgument("userId"){
                     type = NavType.IntType
-                    nullable = true
-                    defaultValue = null
+                    defaultValue = -1
                 }
             )
         ){
@@ -77,9 +76,16 @@ fun AppNavGraph (
                 },
             )
         }
-        composable(Routes.USER_DETAIL) {
+        composable(
+            route = "${Routes.USER_DETAIL}/{userId}",
+            arguments = listOf(
+                navArgument("userId") {
+                    type = NavType.IntType
+                }
+            )
+        ) {
             UserDetailView (
-                viewModel = viewmodel,
+                //viewModel = viewmodel,
                 onBack = {
                     navController.popBackStack(
                         route = Routes.DASHBOARD,

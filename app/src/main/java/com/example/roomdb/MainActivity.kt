@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.presentation.navigation.AppNavGraph
-import com.example.roomdb.presentation.screen.dashboard.DashboardViewModel
 import com.example.roomdb.ui.theme.RoomDBTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,8 +34,9 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .safeDrawingPadding()
                 ) { _ ->
-                    val viewModel: DashboardViewModel = hiltViewModel()
-                    AppNavGraph(viewModel)
+                    //val viewModel: DashboardViewModel = hiltViewModel()
+                    //AppNavGraph(viewModel)
+                    AppNavGraph()
                 }
             }
         }

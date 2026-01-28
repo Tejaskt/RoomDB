@@ -1,13 +1,11 @@
 package com.example.roomdb.presentation.screen.addEditUser
 
-import androidx.constraintlayout.motion.widget.TransitionBuilder.validate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.UserRepository
 import com.example.roomdb.presentation.screen.addEditUser.components.AddEditUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +13,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class AddEditUserViewModel @Inject constructor(
@@ -25,7 +24,7 @@ class AddEditUserViewModel @Inject constructor(
     private val userId: Int? = savedStateHandle["userId"]
 
     val mode: AddEditMode =
-        if (userId == null) AddEditMode.ADD else AddEditMode.EDIT
+        if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
 
     private val _formState = MutableStateFlow(UserFormState())
     val formState: StateFlow<UserFormState> = _formState

@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 fun FormTextField(
     label: String,
     value: String,
-    placeholder: String,
+    //placeholder: String,
     error: String? = null,
     onValueChange: (String) -> Unit
 ) {
@@ -32,7 +32,7 @@ fun FormTextField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            placeholder = { Text(placeholder) },
+            //placeholder = { Text(placeholder) },
             isError = error != null,
             shape = RoundedCornerShape(14.dp),
             modifier = Modifier.fillMaxWidth()

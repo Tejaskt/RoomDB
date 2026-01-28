@@ -28,7 +28,10 @@ class DashboardViewModel @Inject constructor(
 
     /* ---------- EVENTS ---------- */
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    private val _eventFlow = MutableSharedFlow<UiEvent>(
+        replay =  0,
+        extraBufferCapacity = 1
+    )
     val eventFlow = _eventFlow.asSharedFlow()
 
     /* ---------- USERS LIST ---------- */
