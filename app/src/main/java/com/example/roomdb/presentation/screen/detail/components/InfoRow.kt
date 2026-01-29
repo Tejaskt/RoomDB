@@ -18,28 +18,14 @@ fun InfoRow(
     label: String,
     value: String
 ) {
-    Row(
-        verticalAlignment = Alignment.Top,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Icon(
-            imageVector = icon,
-            tint = Color(0xFF4D8DFF),
-            contentDescription = null
-        )
+    Row(verticalAlignment = Alignment.Top,modifier = Modifier.fillMaxWidth()) {
+        Icon(imageVector = icon,tint = Color(0xFF4D8DFF),contentDescription = null)
 
         Spacer(modifier = Modifier.width(12.dp))
 
         Column {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
-            )
+            Text(text = label,style = MaterialTheme.typography.labelMedium)
+            Text(text = value,style = MaterialTheme.typography.bodyMedium,fontWeight = FontWeight.Medium)
         }
     }
 }

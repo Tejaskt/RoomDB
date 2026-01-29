@@ -9,14 +9,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -41,9 +42,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.screen.dashboard.components.UiEvent
 import com.example.roomdb.presentation.utils.AppScaffold
@@ -53,7 +56,6 @@ import com.example.roomdb.presentation.utils.ScreenSpace
 import com.example.roomdb.presentation.utils.UiState
 import com.example.roomdb.ui.theme.App_Button
 import com.example.roomdb.ui.theme.ICON_Red
-import com.example.roomdb.ui.theme.PurpleGrey40
 import com.example.roomdb.ui.theme.User_Avatar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,14 +68,23 @@ fun DashboardView(
     onRemoteUsersClick: () -> Unit // for api fetch
 ) {
 
+    // state for display the user
     val state by viewModel.usersState.collectAsState()
 
+    // state for display the user count in top app bar
     val userCount by viewModel.userCount.collectAsState()
+
+    // snackbar for undo delete user.
+    val snackBarHostState = remember { SnackbarHostState() }
 
     //val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-    val snackBarHostState = remember { SnackbarHostState() }
 
+    /* show snackbar on user delete event
+    *  LaunchedEffect will call this code only once not on recomposition.
+    *  when user delete this snackbar will be shown for 6 sec.
+    *  this is event collector. when event emits it will collect new emitted event.
+    * */
     LaunchedEffect(viewModel) {
         viewModel.eventFlow.collect { event ->
             when (event) {
@@ -105,25 +116,38 @@ fun DashboardView(
                 title = "Users",
                 subtitle = "$userCount total users",
 //                scrollBehavior = scrollBehavior
+                icon = {
+                    IconButton(
+                        onClick = onRemoteUsersClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.AccountCircle,
+                            contentDescription = stringResource(R.string.back_arrow),
+                            tint = Color(0xFF4D8DFF)
+                        )
+                    }
+                }
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
-//        modifier = Modifier.fillMaxSize().safeDrawingPadding()
+//      modifier = Modifier.fillMaxSize().safeDrawingPadding()
 
         ) { paddingValues ->
 
         when (state) {
             is UiState.Loading -> LoadingView()
 
-            is UiState.Error -> Text("Something went wrong")
+            is UiState.Error -> error("Something went wrong")
 
             is UiState.Success -> {
 
+                // cast user from UiState<List<User>> to List<User>
                 val users = (state as UiState.Success<List<User>>).data
 
                 LazyColumn(
                     modifier = Modifier
-                        .padding(paddingValues),
+                        .padding(paddingValues)
+                        .fillMaxSize(),
 //                      .consumeWindowInsets(paddingValues),
 //                  contentPadding = paddingValues
                     contentPadding = PaddingValues(ScreenSpace.Horizontal_Space)
@@ -164,7 +188,7 @@ fun UserCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // Avatar needs to be change.
+            // Avatar
             Surface(
                 shape = MaterialTheme.shapes.extraLarge,
                 color = User_Avatar,
@@ -191,7 +215,6 @@ fun UserCard(
                 Text(text = user.email, style = MaterialTheme.typography.bodySmall)
             }
 
-
             Spacer(modifier = Modifier.width(8.dp))
 
             IconButton(onClick = {onEditUserClick(user.id)}) {
@@ -204,6 +227,8 @@ fun UserCard(
         }
     }
 }
+
+
 
 
 

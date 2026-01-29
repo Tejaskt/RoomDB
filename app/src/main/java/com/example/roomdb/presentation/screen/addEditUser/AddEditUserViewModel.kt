@@ -1,5 +1,6 @@
 package com.example.roomdb.presentation.screen.addEditUser
 
+import android.util.Patterns
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,22 +26,29 @@ class AddEditUserViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    /* ---------- USERID & MODE ---------- */
+
     private val userId: Int = savedStateHandle["userId"] ?: -1
 
-    val mode: AddEditMode =
-        if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
-
-    private val _formState = MutableStateFlow(UserFormState())
-    val formState: StateFlow<UserFormState> = _formState
-
-    private val _uiEvent = MutableSharedFlow<AddEditUiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    val mode: AddEditMode = if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
 
     init {
         if (mode == AddEditMode.EDIT) {
             loadUser()
         }
     }
+
+    /* ---------- FORM STATE ---------- */
+
+    private val _formState = MutableStateFlow(UserFormState())
+    val formState: StateFlow<UserFormState> = _formState
+
+    /* ---------- EVENT ---------- */
+
+    private val _uiEvent = MutableSharedFlow<AddEditUiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
+    /* ---------- LOAD USER ---------- */
 
     private fun loadUser() {
         viewModelScope.launch {
@@ -58,9 +66,7 @@ class AddEditUserViewModel @Inject constructor(
         }
     }
 
-    fun onFieldChange(update: (UserFormState) -> UserFormState) {
-        _formState.update(update)
-    }
+    /* ---------- SUBMIT USER TO DB ---------- */
 
     fun submit() {
         val validated = validate(_formState.value)
@@ -79,13 +85,23 @@ class AddEditUserViewModel @Inject constructor(
         }
     }
 
+    /* ---------- VALIDATION ---------- */
+
     private fun validate(state: UserFormState): UserFormState =
         state.copy(
             nameError = if (state.name.isBlank()) "Name required" else null,
-            emailError = if (!state.email.contains("@")) "Invalid email" else null,
+            emailError = when{
+                state.email.isBlank() -> "Email Required"
+                !Patterns.EMAIL_ADDRESS.matcher(state.email).matches() -> "Invalid Email address"
+                else -> null
+            },
             ageError = if (state.age.toIntOrNull() == null) "Invalid age" else null,
             collegeError = if (state.college.isBlank()) "College required" else null,
             streamError = if (state.stream.isBlank()) "Stream required" else null
         )
+
+    fun onFieldChange(update: (UserFormState) -> UserFormState) {
+        _formState.update(update)
+    }
 }
 

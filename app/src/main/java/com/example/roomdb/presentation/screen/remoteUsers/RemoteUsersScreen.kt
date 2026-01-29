@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
@@ -26,17 +29,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.presentation.model.RemoteUser
 import com.example.roomdb.presentation.utils.ScreenSpace
 import com.example.roomdb.presentation.screen.remoteUsers.components.SyncState
+import com.example.roomdb.presentation.utils.AppScaffold
+import com.example.roomdb.presentation.utils.AppTopBar
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun RemoteUserScreen(viewModel: RemoteUsersViewModel) {
+fun RemoteUserScreen(viewModel: RemoteUsersViewModel = hiltViewModel()) {
 
     val users by viewModel.users.collectAsState()
     val syncState by viewModel.syncState.collectAsState()
-
 
     // for refresh.
     val isRefreshing = syncState is SyncState.Syncing
@@ -45,60 +50,69 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel) {
         onRefresh = { viewModel.sync() }
     )
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .pullRefresh(pullRefreshState)
-    ){
-
-        UserList(users)
-
-        PullRefreshIndicator(
-            refreshing = isRefreshing,
-            state = pullRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter)
-        )
-
-        when(syncState){
-            is SyncState.Syncing -> {
-                LinearProgressIndicator(
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-
-            is SyncState.Error -> {
-                Text(
-                    text = (syncState as SyncState.Error).message,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(56.dp)
-                )
-            }
-
-            else -> Unit
-
+    AppScaffold(
+        topBarContent = {
+            AppTopBar(
+                title = "Remote Users",
+                subtitle = "Fetch From JsonPlaceholder Api"
+            )
         }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(pullRefreshState)
+                .padding(paddingValues)
+        ){
+            UserList(users)
+
+            PullRefreshIndicator(
+                refreshing = isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+
+            when(syncState){
+                is SyncState.Syncing -> {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                is SyncState.Error -> {
+                    Text(
+                        text = (syncState as SyncState.Error).message,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(56.dp)
+                    )
+                }
+
+                else -> Unit
+
+            }
+        }
+
+        /* not to do this because sync in not ui state.
+        when(state){
+            is UiState.Loading -> {
+                LoadingView()
+            }
+            is UiState.Error -> {
+                ErrorView(
+                    message = (state as UiState.Error).message,
+                    onRetry = { viewModel.fetchUsers() }
+                )
+            }
+            is UiState.Success -> {
+                UserList(
+                    users = (state as UiState.Success<List<RemoteUser>>).data
+                )
+            }
+        } */
+
     }
-
-    /* not to do this because sync in not ui state.
-    when(state){
-        is UiState.Loading -> {
-            LoadingView()
-        }
-        is UiState.Error -> {
-            ErrorView(
-                message = (state as UiState.Error).message,
-                onRetry = { viewModel.fetchUsers() }
-            )
-        }
-        is UiState.Success -> {
-            UserList(
-                users = (state as UiState.Success<List<RemoteUser>>).data
-            )
-        }
-    } */
-
 }
 
 @Composable
@@ -106,7 +120,7 @@ private fun UserList(
     users: List<RemoteUser>
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),//.windowInsetsPadding(WindowInsets.displayCutout),
         contentPadding = PaddingValues(ScreenSpace.Horizontal_Space),
         verticalArrangement = Arrangement.spacedBy(ScreenSpace.Vertical_Space)
     ) {
@@ -134,8 +148,6 @@ private fun UserItem(user: RemoteUser) {
         }
     }
 }
-
-
 
 @Composable
 private fun ErrorView(

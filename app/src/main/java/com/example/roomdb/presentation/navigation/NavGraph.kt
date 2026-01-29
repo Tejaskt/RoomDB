@@ -86,7 +86,6 @@ fun AppNavGraph (){
             )
         }
         composable(Routes.REMOTE_USERS){
-
             /* with out hilt boilerplate code
             val context = LocalContext.current
             val database = remember {
@@ -107,10 +106,7 @@ fun AppNavGraph (){
             val viewModel: RemoteUsersViewModel = viewModel(factory = factory)
 
             */
-
-            val viewModel: RemoteUsersViewModel = hiltViewModel()
-            RemoteUserScreen(viewModel = viewModel)
-
+            RemoteUserScreen()
         }
     }
 }

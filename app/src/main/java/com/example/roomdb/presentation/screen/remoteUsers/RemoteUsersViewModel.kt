@@ -20,6 +20,8 @@ class RemoteUsersViewModel @Inject constructor (
     private val repository: RemoteUserRepository
 ) : ViewModel() {
 
+    /* ---------- COLLECT THE DATA FROM DB ---------- */
+
     val users: StateFlow<List<RemoteUser>> =
         repository.observeUsers()
             .stateIn(
@@ -28,14 +30,18 @@ class RemoteUsersViewModel @Inject constructor (
                 emptyList()
             )
 
+    /* ---------- Sync STATE ---------- */
+
     private val _syncState = MutableStateFlow<SyncState>(SyncState.Idle)
     val syncState : StateFlow<SyncState> = _syncState
-
 
     init {
       sync()
     }
 
+    /*
+    * it will fetch the data from api and insert that data into remote_user table into db
+    * */
     fun sync(){
         viewModelScope.launch {
             _syncState.value = SyncState.Syncing

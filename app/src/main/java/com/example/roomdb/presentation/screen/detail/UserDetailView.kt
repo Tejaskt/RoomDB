@@ -46,9 +46,9 @@ import com.example.roomdb.presentation.utils.UiState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDetailView(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    viewModel: UserDetailViewModel = hiltViewModel()
 ) {
-    val viewModel: UserDetailViewModel = hiltViewModel()
     val state by viewModel.userState.collectAsState()
 
     AppScaffold(
@@ -125,7 +125,7 @@ fun UserDetailView(
     }
 }
 
-// sample
+// sample UI
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

@@ -23,14 +23,21 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val repository: UserRepository,
-    private val savedStateHandle: SavedStateHandle
+//    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    /* Unidirectional Data Flow (UDF)
+    *  when we use UiEvent | UiState like sealed class it called udf.
+    * */
 
     /* ---------- EVENTS ---------- */
 
+    /* encapsulation
+    * Private mutable, public immutable
+    * */
     private val _eventFlow = MutableSharedFlow<UiEvent>(
-        replay =  0,
-        extraBufferCapacity = 1
+        replay =  0, // no re-trigger on rotation
+        extraBufferCapacity = 1 // don’t lose events
     )
     val eventFlow = _eventFlow.asSharedFlow()
 
@@ -45,6 +52,8 @@ class DashboardViewModel @Inject constructor(
                 UiState.Loading
             )
 
+    /* ---------- USERS COUNT ---------- */
+
     val userCount: StateFlow<Int> =
         repository.usersCount
             .stateIn(
@@ -55,6 +64,7 @@ class DashboardViewModel @Inject constructor(
 
     /* ---------- SELECTED USER (DETAIL SCREEN ONLY) ---------- */
 
+    /*
     private val selectedUserId =
         savedStateHandle.getStateFlow<Int?>("selected_user_id", null)
 
@@ -76,6 +86,7 @@ class DashboardViewModel @Inject constructor(
     fun selectUser(userId: Int) {
         savedStateHandle["selected_user_id"] = userId
     }
+    */
 
     /* ---------- DELETE ---------- */
 

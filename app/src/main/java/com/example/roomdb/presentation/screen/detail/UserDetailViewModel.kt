@@ -19,6 +19,12 @@ class UserDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    /* ---------- USER ID ---------- */
+
+    /*
+     * savedStateHandle
+     * A small, lifecycle-safe key–value store owned by the ViewModel
+     * */
     private val userId: Int =
         savedStateHandle["userId"]
             ?: error("userId missing for UserDetailViewModel")
