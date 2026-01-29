@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
@@ -31,10 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.utils.ScreenSpace
 import com.example.roomdb.presentation.screen.remoteUsers.components.SyncState
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
+import com.example.roomdb.presentation.utils.ScreenSpace
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -80,13 +78,15 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel = hiltViewModel()) {
                 }
 
                 is SyncState.Error -> {
-                    Text(
-                        text = (syncState as SyncState.Error).message,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(56.dp)
-                    )
+                    if (users.isEmpty()){
+                        Text(
+                            text = (syncState as SyncState.Error).message,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(56.dp)
+                        )
+                    }
                 }
 
                 else -> Unit
@@ -94,7 +94,7 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel = hiltViewModel()) {
             }
         }
 
-        /* not to do this because sync in not ui state.
+        /* not to do this because sync in not ui state it's a network state so manage it differently.
         when(state){
             is UiState.Loading -> {
                 LoadingView()
@@ -167,3 +167,25 @@ private fun ErrorView(
         }
     }
 }
+
+/* Flow
+* UI
+   ↓
+* RemoteUsersViewModel
+   ↓
+* RemoteUserRepository
+   ↓
+* Retrofit API
+   ↓
+* DTO
+   ↓
+* Mapper
+   ↓
+* Entity
+   ↓
+* Room
+   ↓
+* Flow
+   ↓
+* UI
+* */

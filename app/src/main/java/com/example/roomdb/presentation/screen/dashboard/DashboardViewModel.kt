@@ -72,7 +72,7 @@ class DashboardViewModel @Inject constructor(
     val selectedUserState: StateFlow<UiState<User>> =
         selectedUserId
             .filterNotNull()
-            .flatMapLatest { repository.getUserById(it) }
+            .flatMapLatest { repository.getUserById(it) }  // Whenever userId changes, cancel the old DB query and start a new one.
             .map { user ->
                 user?.let { UiState.Success(it) }
                     ?: UiState.Error("User not found")
@@ -87,6 +87,7 @@ class DashboardViewModel @Inject constructor(
         savedStateHandle["selected_user_id"] = userId
     }
     */
+
 
     /* ---------- DELETE ---------- */
 

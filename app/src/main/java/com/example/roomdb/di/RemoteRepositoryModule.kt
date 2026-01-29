@@ -12,6 +12,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class RemoteRepositoryModule {
 
+    /* Binds
+    * You already have an implementation
+    * Just map interface → implementation
+    * */
     @Binds
     @Singleton
     abstract fun bindRemoteUserRepository(

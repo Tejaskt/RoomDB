@@ -13,10 +13,10 @@ interface RemoteUserDao {
     @Query("SELECT * FROM remote_users")
     fun observeUsers() : Flow<List<RemoteUserEntity>>
 
-
     /* Server is source of truth
     *  API data overwrites local
     * */
+
     @Insert(onConflict = OnConflictStrategy.REPLACE) // Replace = sync-safe.
     suspend fun insertUsers(users : List<RemoteUserEntity>)
 
