@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.detail
+package com.example.roomdb.presentation.screen.userDetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

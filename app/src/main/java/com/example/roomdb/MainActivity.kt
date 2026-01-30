@@ -27,9 +27,6 @@ class MainActivity : ComponentActivity() {
                 AppNavGraph()
             }
         }
-
-        Log.d("Firebase", FirebaseAuth.getInstance().currentUser?.uid ?: "No user")
-
     }
 }
 

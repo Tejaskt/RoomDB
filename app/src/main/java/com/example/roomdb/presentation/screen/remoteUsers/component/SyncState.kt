@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.remoteUsers.components
+package com.example.roomdb.presentation.screen.remoteUsers.component
 
 sealed class SyncState {
     object Idle: SyncState()

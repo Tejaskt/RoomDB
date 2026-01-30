@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.addEditUser.components
+package com.example.roomdb.presentation.screen.addEditUser.component
 
 import com.example.roomdb.data.local.entity.User
 

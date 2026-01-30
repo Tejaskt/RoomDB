@@ -9,15 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,10 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.screen.remoteUsers.components.SyncState
+import com.example.roomdb.presentation.screen.remoteUsers.component.SyncState
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
 import com.example.roomdb.presentation.utils.ScreenSpace
+import com.example.roomdb.ui.theme.ICON_Red
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -52,7 +56,18 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel = hiltViewModel()) {
         topBarContent = {
             AppTopBar(
                 title = "Remote Users",
-                subtitle = "Fetch From JsonPlaceholder Api"
+                subtitle = "Fetch From JsonPlaceholder Api",
+                icon = {
+                    IconButton(
+                        onClick = {viewModel.deleteAll()}
+                    ) {
+                        Icon(
+                            Icons.Outlined.Delete,
+                            contentDescription = null,
+                            tint = ICON_Red
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->

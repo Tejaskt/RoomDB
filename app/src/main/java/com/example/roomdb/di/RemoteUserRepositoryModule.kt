@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RemoteRepositoryModule {
+abstract class RemoteUserRepositoryModule {
 
     /* Binds
     * You already have an implementation
@@ -21,5 +21,4 @@ abstract class RemoteRepositoryModule {
     abstract fun bindRemoteUserRepository(
         impl: RemoteUserRepositoryImpl
     ): RemoteUserRepository
-
 }

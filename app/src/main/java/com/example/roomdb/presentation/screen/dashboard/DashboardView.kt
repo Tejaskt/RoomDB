@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
-import com.example.roomdb.presentation.screen.dashboard.components.UiEvent
+import com.example.roomdb.presentation.screen.dashboard.component.UiEvent
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
 import com.example.roomdb.presentation.utils.LoadingView

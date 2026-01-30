@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.detail.components
+package com.example.roomdb.presentation.screen.userDetails.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card

@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.roomdb.presentation.screen.addEditUser.components.AddEditMode
+import com.example.roomdb.presentation.screen.addEditUser.component.AddEditMode
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
 import com.example.roomdb.ui.theme.App_Button

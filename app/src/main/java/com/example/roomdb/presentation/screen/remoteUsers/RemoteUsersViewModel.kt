@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.RemoteUserRepository
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.screen.remoteUsers.components.NetworkResult
-import com.example.roomdb.presentation.screen.remoteUsers.components.SyncState
+import com.example.roomdb.presentation.screen.remoteUsers.component.NetworkResult
+import com.example.roomdb.presentation.screen.remoteUsers.component.SyncState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -37,6 +37,14 @@ class RemoteUsersViewModel @Inject constructor (
 
     init {
       sync()
+    }
+
+    /* ---------- Sync STATE ---------- */
+
+    fun deleteAll(){
+        viewModelScope.launch {
+            repository.clearUsers()
+        }
     }
 
     /*

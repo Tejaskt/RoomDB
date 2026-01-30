@@ -10,11 +10,19 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+object UserRepositoryModule {
 
     @Provides
     @Singleton
     fun provideUserRepository(
         dao: UserDao
     ) : UserRepository = UserRepository(dao)
+
+//    @Binds
+//    @Singleton
+//    abstract fun bindUserRepository(
+//        impl: UserRepository
+//    ): UserRepository // we can only map interface to its implementation.
+
+
 }

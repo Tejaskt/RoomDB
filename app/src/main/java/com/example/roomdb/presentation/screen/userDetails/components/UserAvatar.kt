@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.detail.components
+package com.example.roomdb.presentation.screen.userDetails.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,7 +19,6 @@ import com.example.roomdb.ui.theme.User_Avatar
 fun UserAvatar(
     initials: String,
 ) {
-
     Box(
         modifier = Modifier
             .size(96.dp)

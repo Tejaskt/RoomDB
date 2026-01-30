@@ -5,11 +5,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.UserRepository
-import com.example.roomdb.presentation.screen.addEditUser.components.AddEditMode
-import com.example.roomdb.presentation.screen.addEditUser.components.AddEditUiEvent
-import com.example.roomdb.presentation.screen.addEditUser.components.UserFormState
-import com.example.roomdb.presentation.screen.addEditUser.components.hasError
-import com.example.roomdb.presentation.screen.addEditUser.components.toUser
+import com.example.roomdb.presentation.screen.addEditUser.component.AddEditMode
+import com.example.roomdb.presentation.screen.addEditUser.component.AddEditUiEvent
+import com.example.roomdb.presentation.screen.addEditUser.component.UserFormState
+import com.example.roomdb.presentation.screen.addEditUser.component.hasError
+import com.example.roomdb.presentation.screen.addEditUser.component.toUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,7 +1,7 @@
 package com.example.roomdb.data.repository
 
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.screen.remoteUsers.components.NetworkResult
+import com.example.roomdb.presentation.screen.remoteUsers.component.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteUserRepository {
@@ -13,4 +13,6 @@ interface RemoteUserRepository {
 
     /* Triggers Api -> DB sync */
     suspend fun syncUsers(): NetworkResult<Unit>
+
+    suspend fun clearUsers(): NetworkResult<Unit>
 }

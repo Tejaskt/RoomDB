@@ -1,4 +1,4 @@
-package com.example.roomdb.presentation.screen.detail
+package com.example.roomdb.presentation.screen.userDetails
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.R
 import com.example.roomdb.data.local.entity.User
-import com.example.roomdb.presentation.screen.detail.components.InfoCard
-import com.example.roomdb.presentation.screen.detail.components.InfoRow
-import com.example.roomdb.presentation.screen.detail.components.UserAvatar
+import com.example.roomdb.presentation.screen.userDetails.components.InfoCard
+import com.example.roomdb.presentation.screen.userDetails.components.InfoRow
+import com.example.roomdb.presentation.screen.userDetails.components.UserAvatar
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
 import com.example.roomdb.presentation.utils.LoadingView

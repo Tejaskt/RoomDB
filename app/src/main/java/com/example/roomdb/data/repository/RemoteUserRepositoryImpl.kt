@@ -5,7 +5,7 @@ import com.example.roomdb.data.remote.api.UserApi
 import com.example.roomdb.data.remote.mapper.toEntity
 import com.example.roomdb.data.remote.mapper.toUi
 import com.example.roomdb.presentation.model.RemoteUser
-import com.example.roomdb.presentation.screen.remoteUsers.components.NetworkResult
+import com.example.roomdb.presentation.screen.remoteUsers.component.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
@@ -53,6 +53,15 @@ class RemoteUserRepositoryImpl @Inject constructor(
         }
         catch (e: Exception){
             NetworkResult.Error("Something Went Wrong!")
+        }
+    }
+
+    override suspend fun clearUsers() : NetworkResult<Unit> {
+        return try {
+            val result = dao.clearUsers()
+            NetworkResult.Success(result)
+        }catch (e : Exception){
+            NetworkResult.Error("Failed To Delete")
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.roomdb.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -8,21 +9,51 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.roomdb.presentation.screen.addEditUser.AddEditView
+import com.example.roomdb.presentation.screen.auth.AuthView
+import com.example.roomdb.presentation.screen.auth.AuthViewModel
 import com.example.roomdb.presentation.screen.dashboard.DashboardView
-import com.example.roomdb.presentation.screen.detail.UserDetailView
+import com.example.roomdb.presentation.screen.userDetails.UserDetailView
 import com.example.roomdb.presentation.screen.remoteUsers.RemoteUserScreen
-import com.example.roomdb.presentation.screen.remoteUsers.RemoteUsersViewModel
+import com.example.roomdb.presentation.screen.splashScreen.SplashScreen
+import com.example.roomdb.presentation.screen.splashScreen.SplashViewModel
+import com.example.roomdb.presentation.screen.splashScreen.component.SplashEvent
 
 @Composable
-fun AppNavGraph (){
+fun AppNavGraph (
+    splashVM : SplashViewModel = hiltViewModel()
+){
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = Routes.DASHBOARD
+        startDestination = Routes.SPLASH
     ){
-        composable(Routes.DASHBOARD){
+        composable(Routes.SPLASH){
+            SplashScreen()
 
+            LaunchedEffect(Unit) {
+                splashVM.eventFlow.collect{ event ->
+                    when(event){
+                        SplashEvent.NavigateToAuth -> {
+                            navController.navigate(Routes.AUTH) {
+                                popUpTo(Routes.SPLASH) { inclusive = true }
+                            }
+                        }
+                        SplashEvent.NavigateToDashboard -> {
+                            navController.navigate(Routes.DASHBOARD) {
+                                popUpTo(Routes.SPLASH) { inclusive = true }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        composable(Routes.AUTH){
+            AuthView()
+        }
+
+        composable(Routes.DASHBOARD){
             DashboardView (
                 onAddUserClick = {
                     navController.navigate(route = Routes.ADD_EDIT_USER){
@@ -50,6 +81,7 @@ fun AppNavGraph (){
                 }
             )
         }
+
         composable(
             route = "${Routes.ADD_EDIT_USER}?userId={userId}",
             arguments = listOf(
@@ -68,6 +100,7 @@ fun AppNavGraph (){
                 },
             )
         }
+
         composable(
             route = "${Routes.USER_DETAIL}/{userId}",
             arguments = listOf(
@@ -85,6 +118,7 @@ fun AppNavGraph (){
                 }
             )
         }
+
         composable(Routes.REMOTE_USERS){
             /* with out hilt boilerplate code
             val context = LocalContext.current
