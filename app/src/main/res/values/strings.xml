@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">RoomDB</string>
-    <string name="title"> Welcome..!!
-    </string>
+    <string name="app_name">User Hub</string>
     <string name="back_arrow">Back Arrow</string>
 </resources>

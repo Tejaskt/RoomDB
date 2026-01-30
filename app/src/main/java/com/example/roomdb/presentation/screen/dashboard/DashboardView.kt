@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.AccountCircle
@@ -44,9 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.R
@@ -95,7 +93,8 @@ fun DashboardView(
                     val result = snackBarHostState.showSnackbar(
                         message = "User Deleted",
                         actionLabel = "UNDO",
-                        duration = SnackbarDuration.Short
+                        duration = SnackbarDuration.Short,
+                        withDismissAction = true
                     )
                     if (result == SnackbarResult.ActionPerformed) {
                         viewModel.undoDelete(event.user)
@@ -109,7 +108,11 @@ fun DashboardView(
         //modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddUserClick, shape = FloatingActionButtonDefaults.largeShape, containerColor = App_Button, contentColor = White
+                onClick = onAddUserClick,
+                shape = FloatingActionButtonDefaults.largeShape,
+                containerColor = App_Button,
+                contentColor = White,
+                modifier = Modifier.offset(y = (-10).dp, x = (-16).dp)
             ) {
                 Icon(Icons.Outlined.Add, contentDescription = "Add Icon")
             }
@@ -217,7 +220,7 @@ fun UserCard(
                             .take(2)
                             .joinToString("") { it.first().uppercaseChar().toString() }
                         ,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = White,//MaterialTheme.colorScheme.onPrimary,
                         fontWeight = FontWeight.SemiBold
                     )
                 }

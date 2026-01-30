@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp) // for room
     alias(libs.plugins.hilt) // for hilt
     kotlin("kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -57,6 +58,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -89,6 +91,8 @@ dependencies {
     // pull to refresh
     implementation(libs.androidx.compose.material)
 
-
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 }
 

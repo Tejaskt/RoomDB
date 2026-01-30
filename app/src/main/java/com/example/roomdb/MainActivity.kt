@@ -1,11 +1,13 @@
 package com.example.roomdb
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.roomdb.presentation.navigation.AppNavGraph
 import com.example.roomdb.ui.theme.RoomDBTheme
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +27,9 @@ class MainActivity : ComponentActivity() {
                 AppNavGraph()
             }
         }
+
+        Log.d("Firebase", FirebaseAuth.getInstance().currentUser?.uid ?: "No user")
+
     }
 }
 
