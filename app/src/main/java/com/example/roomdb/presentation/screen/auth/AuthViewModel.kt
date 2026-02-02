@@ -107,12 +107,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    /* ---------- LOGOUT ---------- */
-
-    fun logout() {
-        authRepository.logout()
-        // Navigation handled by Splash via observeAuthState()
-    }
 }
 
 

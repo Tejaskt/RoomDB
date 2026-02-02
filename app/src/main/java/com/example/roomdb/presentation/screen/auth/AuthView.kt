@@ -21,6 +21,7 @@ fun AuthView(
     val uiState by viewModel.uiState.collectAsState()
 
     /* ---------- AUTO NAVIGATION ---------- */
+
     LaunchedEffect(uiState) {
         if (uiState is AuthUiState.Success) {
             onNavigateToDashboard()
@@ -47,6 +48,7 @@ fun AuthView(
                 )
 
                 /* ---------- NAME (REGISTER ONLY) ---------- */
+
                 if (mode == AuthMode.REGISTER) {
                     OutlinedTextField(
                         value = formState.name,
@@ -66,6 +68,7 @@ fun AuthView(
                 }
 
                 /* ---------- EMAIL ---------- */
+
                 OutlinedTextField(
                     value = formState.email,
                     onValueChange = {
@@ -82,6 +85,7 @@ fun AuthView(
                 }
 
                 /* ---------- PASSWORD ---------- */
+
                 OutlinedTextField(
                     value = formState.password,
                     onValueChange = {
@@ -99,6 +103,7 @@ fun AuthView(
                 }
 
                 /* ---------- SUBMIT ---------- */
+
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { viewModel.submit() },
@@ -117,6 +122,7 @@ fun AuthView(
                 }
 
                 /* ---------- SWITCH MODE ---------- */
+
                 TextButton(
                     onClick = { viewModel.switchMode() }
                 ) {
@@ -129,6 +135,7 @@ fun AuthView(
                 }
 
                 /* ---------- ERROR ---------- */
+
                 if (uiState is AuthUiState.Error) {
                     Text(
                         text = (uiState as AuthUiState.Error).message,

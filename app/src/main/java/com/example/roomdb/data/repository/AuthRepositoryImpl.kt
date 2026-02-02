@@ -19,9 +19,6 @@ class AuthRepositoryImpl @Inject constructor(
             trySend(firebaseAuth.currentUser != null)
         }
 
-//        // emit immediately
-//        trySend(auth.currentUser != null)
-
         auth.addAuthStateListener(listener)
 
         awaitClose {
