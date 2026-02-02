@@ -2,6 +2,8 @@ package com.example.roomdb.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,74 +12,74 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.roomdb.presentation.screen.addEditUser.AddEditView
 import com.example.roomdb.presentation.screen.auth.AuthView
-import com.example.roomdb.presentation.screen.auth.AuthViewModel
 import com.example.roomdb.presentation.screen.dashboard.DashboardView
 import com.example.roomdb.presentation.screen.userDetails.UserDetailView
 import com.example.roomdb.presentation.screen.remoteUsers.RemoteUserScreen
 import com.example.roomdb.presentation.screen.splashScreen.SplashScreen
 import com.example.roomdb.presentation.screen.splashScreen.SplashViewModel
-import com.example.roomdb.presentation.screen.splashScreen.component.SplashEvent
+import com.example.roomdb.presentation.screen.splashScreen.component.SplashState
 
 @Composable
-fun AppNavGraph (
-    splashVM : SplashViewModel = hiltViewModel()
-){
+fun AppNavGraph(
+    splashVM: SplashViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
+    val splashState by splashVM.splashState.collectAsState()
+
+    LaunchedEffect(splashState) {
+        when (splashState) {
+            SplashState.Authenticated -> {
+                if (navController.currentDestination?.route == Routes.AUTH) {
+                    navController.navigate(Routes.DASHBOARD) {
+                        popUpTo(Routes.AUTH) { inclusive = true }
+                    }
+                }
+            }
+
+            SplashState.Unauthenticated -> {
+                if (navController.currentDestination?.route != Routes.AUTH) {
+                    navController.navigate(Routes.AUTH) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+
+            SplashState.Loading -> Unit
+        }
+    }
 
     NavHost(
         navController = navController,
         startDestination = Routes.SPLASH
-    ){
-        composable(Routes.SPLASH){
-            SplashScreen()
+    ) {
 
-            LaunchedEffect(Unit) {
-                splashVM.eventFlow.collect{ event ->
-                    when(event){
-                        SplashEvent.NavigateToAuth -> {
-                            navController.navigate(Routes.AUTH) {
-                                popUpTo(Routes.SPLASH) { inclusive = true }
-                            }
-                        }
-                        SplashEvent.NavigateToDashboard -> {
-                            navController.navigate(Routes.DASHBOARD) {
-                                popUpTo(Routes.SPLASH) { inclusive = true }
-                            }
-                        }
+        composable(Routes.SPLASH) {
+            SplashScreen()
+        }
+
+        composable(Routes.AUTH) {
+            AuthView(
+                onNavigateToDashboard = {
+                    navController.navigate(Routes.DASHBOARD) {
+                        popUpTo(Routes.AUTH) { inclusive = true }
                     }
                 }
-            }
+            )
         }
 
-        composable(Routes.AUTH){
-            AuthView()
-        }
-
-        composable(Routes.DASHBOARD){
-            DashboardView (
+        composable(Routes.DASHBOARD) {
+            DashboardView(
                 onAddUserClick = {
-                    navController.navigate(route = Routes.ADD_EDIT_USER){
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(Routes.ADD_EDIT_USER)
                 },
                 onUserDetailsClick = { userId ->
-                    navController.navigate("${Routes.USER_DETAIL}/$userId"){
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate("${Routes.USER_DETAIL}/$userId")
                 },
                 onEditUserClick = { userId ->
-                    navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId"){
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId")
                 },
                 onRemoteUsersClick = {
-                    navController.navigate(Routes.REMOTE_USERS){
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(Routes.REMOTE_USERS)
                 }
             )
         }
@@ -85,19 +87,16 @@ fun AppNavGraph (
         composable(
             route = "${Routes.ADD_EDIT_USER}?userId={userId}",
             arguments = listOf(
-                navArgument("userId"){
+                navArgument("userId") {
                     type = NavType.IntType
                     defaultValue = -1
                 }
             )
         ) {
-            AddEditView (
+            AddEditView(
                 onBack = {
-                    navController.popBackStack(
-                        route = Routes.DASHBOARD,
-                        inclusive = false
-                    )
-                },
+                    navController.popBackStack(Routes.DASHBOARD, false)
+                }
             )
         }
 
@@ -109,38 +108,16 @@ fun AppNavGraph (
                 }
             )
         ) {
-            UserDetailView (
+            UserDetailView(
                 onBack = {
-                    navController.popBackStack(
-                        route = Routes.DASHBOARD,
-                        inclusive = false
-                    )
+                    navController.popBackStack(Routes.DASHBOARD, false)
                 }
             )
         }
 
-        composable(Routes.REMOTE_USERS){
-            /* with out hilt boilerplate code
-            val context = LocalContext.current
-            val database = remember {
-                AppDatabase.getDatabase(context)
-            }
-
-            val repository = remember {
-                RemoteUserRepositoryImpl(
-                    api = RetrofitClient.api,
-                    dao = database.remoteUserDao()
-                )
-            }
-
-            val factory = remember {
-                RemoteUsersViewModelFactory(repository)
-            }
-
-            val viewModel: RemoteUsersViewModel = viewModel(factory = factory)
-
-            */
+        composable(Routes.REMOTE_USERS) {
             RemoteUserScreen()
         }
     }
 }
+

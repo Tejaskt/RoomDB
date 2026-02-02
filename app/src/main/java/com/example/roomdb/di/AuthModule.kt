@@ -3,6 +3,7 @@ package com.example.roomdb.di
 import com.example.roomdb.data.repository.AuthRepository
 import com.example.roomdb.data.repository.AuthRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -35,5 +36,10 @@ abstract class AuthModule {
         @Provides
         @Singleton
         fun provideFirebaseAuth() : FirebaseAuth = FirebaseAuth.getInstance()
+
+        @Provides
+        @Singleton
+        fun provideFirestore() : FirebaseFirestore = FirebaseFirestore.getInstance()
+
     }
 }

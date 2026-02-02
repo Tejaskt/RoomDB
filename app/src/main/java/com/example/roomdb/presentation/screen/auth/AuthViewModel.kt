@@ -1,21 +1,17 @@
+
 package com.example.roomdb.presentation.screen.auth
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.AuthRepository
-import com.example.roomdb.presentation.screen.auth.component.AuthEvent
 import com.example.roomdb.presentation.screen.auth.component.AuthFormState
 import com.example.roomdb.presentation.screen.auth.component.AuthMode
 import com.example.roomdb.presentation.screen.auth.component.AuthUiState
-import com.example.roomdb.presentation.screen.auth.component.AuthUiState.Error
-import com.example.roomdb.presentation.screen.auth.component.AuthUiState.Loading
-import com.example.roomdb.presentation.utils.AuthResult
+import com.example.roomdb.presentation.screen.auth.component.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,16 +19,17 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository
-) : ViewModel(){
+) : ViewModel() {
 
-    /* ---------- MODES ---------- */
+    /* ---------- MODE ---------- */
 
     private val _mode = MutableStateFlow(AuthMode.LOGIN)
-    val mode : StateFlow<AuthMode> = _mode
+    val mode: StateFlow<AuthMode> = _mode
 
-    // ui logic to change modes
-    fun switchMode(){
-        _mode.value = if (_mode.value == AuthMode.LOGIN) AuthMode.REGISTER else AuthMode.LOGIN
+    fun switchMode() {
+        _mode.value =
+            if (_mode.value == AuthMode.LOGIN) AuthMode.REGISTER
+            else AuthMode.LOGIN
     }
 
     /* ---------- FORM STATE ---------- */
@@ -40,94 +37,83 @@ class AuthViewModel @Inject constructor(
     private val _formState = MutableStateFlow(AuthFormState())
     val formState: StateFlow<AuthFormState> = _formState
 
-    fun onValueChange(value: (AuthFormState) -> AuthFormState) {
-        _formState.update(value)
+    fun onValueChange(update: (AuthFormState) -> AuthFormState) {
+        _formState.update(update)
     }
 
     /* ---------- UI STATE ---------- */
 
     private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Idle)
-    val uiState : StateFlow<AuthUiState> = _uiState
-
-    /* ---------- EVENT FLOW ---------- */
-
-    private val _eventFlow = MutableSharedFlow<AuthEvent>()
-    val eventFlow  = _eventFlow.asSharedFlow()
-
-    // checks user login or not
-    init {
-        if(authRepository.isUserLoggedIn()){
-            viewModelScope.launch {
-                _eventFlow.emit(AuthEvent.NavigateToDashboard)
-            }
-        }
-    }
+    val uiState: StateFlow<AuthUiState> = _uiState
 
     /* ---------- VALIDATION ---------- */
 
-    private fun validate() : Boolean{
+    private fun validate(): Boolean {
         val state = _formState.value
 
-        val emailError = when{
-            state.email.isBlank() -> "Email Required"
-            !Patterns.EMAIL_ADDRESS.matcher(state.email).matches() -> "Invalid Email address"
+        val nameError =
+            if (_mode.value == AuthMode.REGISTER && state.name.isBlank())
+                "Name required"
+            else null
+
+        val emailError = when {
+            state.email.isBlank() -> "Email required"
+            !Patterns.EMAIL_ADDRESS.matcher(state.email).matches() ->
+                "Invalid email address"
             else -> null
         }
 
-        val passwordError = if(state.password.length < 6) "Min 6 Character required" else null
+        val passwordError =
+            if (state.password.length < 6)
+                "Minimum 6 characters required"
+            else null
 
         _formState.value = state.copy(
+            nameError = nameError,
             emailError = emailError,
             passwordError = passwordError
         )
 
-        return emailError == null && passwordError == null
+        return listOf(nameError, emailError, passwordError).all { it == null }
     }
 
-    /* ---------- LOGIN & REGISTER ---------- */
+    /* ---------- LOGIN / REGISTER ---------- */
 
     fun submit() {
-
         if (!validate()) return
 
         viewModelScope.launch {
+            _uiState.value = AuthUiState.Loading
 
-            _uiState.value = Loading
+            val state = _formState.value
 
-            val email = _formState.value.email
-            val password = _formState.value.password
+            val result = when (_mode.value) {
+                AuthMode.LOGIN ->
+                    authRepository.login(state.email, state.password)
 
-            val result = when(_mode.value) {
-                AuthMode.LOGIN -> authRepository.login(email,password)
-                AuthMode.REGISTER -> authRepository.register(email,password)
+                AuthMode.REGISTER ->
+                    authRepository.register(
+                        state.name,
+                        state.email,
+                        state.password
+                    )
             }
 
-            when (result) {
-                is AuthResult.Success -> {
-                    _uiState.value = AuthUiState.Success
-                    _eventFlow.emit(AuthEvent.NavigateToDashboard)
-                }
-                is AuthResult.Error -> {
-                    _uiState.value = Error(result.message)
-                }
-
-                else -> Unit
+            _uiState.value = when (result) {
+                is AuthResult.Success -> AuthUiState.Success
+                is AuthResult.Error -> AuthUiState.Error(result.message)
+                is AuthResult.Loading -> AuthUiState.Loading
             }
         }
-    }
-
-    // Checks if user logged in or not.
-    fun isLoggedIn() : Boolean {
-        return authRepository.isUserLoggedIn()
     }
 
     /* ---------- LOGOUT ---------- */
 
-    fun logout(){
+    fun logout() {
         authRepository.logout()
-        viewModelScope.launch {
-            _eventFlow.emit(AuthEvent.NavigateToLogin)
-        }
+        // Navigation handled by Splash via observeAuthState()
     }
-
 }
+
+
+

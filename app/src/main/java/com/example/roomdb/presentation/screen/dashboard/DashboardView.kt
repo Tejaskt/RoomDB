@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Card
@@ -66,7 +68,7 @@ fun DashboardView(
     onAddUserClick: () -> Unit,
     onUserDetailsClick: (Int) -> Unit,
     onEditUserClick: (Int) -> Unit,
-    onRemoteUsersClick: () -> Unit // for api fetch
+    onRemoteUsersClick: () -> Unit, // for api fetch
 ) {
 
     // state for display the user
@@ -86,7 +88,7 @@ fun DashboardView(
     *  when user delete this snackbar will be shown for 6 sec.
     *  this is event collector. when event emits it will collect new emitted event.
     * */
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is UiEvent.ShowUndoDelete -> {
@@ -130,6 +132,16 @@ fun DashboardView(
                             imageVector = Icons.Outlined.AccountCircle,
                             contentDescription = stringResource(R.string.back_arrow),
                             tint = Color(0xFF4D8DFF)
+                        )
+                    }
+
+                    IconButton(
+                        onClick = { viewModel.logout() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = "Log out",
+                            tint = ICON_Red
                         )
                     }
                 }

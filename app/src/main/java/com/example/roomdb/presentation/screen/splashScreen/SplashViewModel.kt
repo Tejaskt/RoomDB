@@ -3,31 +3,27 @@ package com.example.roomdb.presentation.screen.splashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.repository.AuthRepository
-import com.example.roomdb.presentation.screen.splashScreen.component.SplashEvent
+import com.example.roomdb.presentation.screen.splashScreen.component.SplashState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val authRepository: AuthRepository
-) : ViewModel(){
+    authRepository: AuthRepository
+) : ViewModel() {
 
-    private val _eventFlow = MutableSharedFlow<SplashEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
-    init {
-        viewModelScope.launch {
-            delay(1000)
-
-            if (authRepository.isUserLoggedIn()){
-                _eventFlow.emit(SplashEvent.NavigateToDashboard)
-            }else{
-                _eventFlow.emit(SplashEvent.NavigateToAuth)
-            }
+    val splashState = authRepository
+        .observeAuthState()
+        .map { isLoggedIn ->
+            if (isLoggedIn) SplashState.Authenticated
+            else SplashState.Unauthenticated
         }
-    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = SplashState.Loading
+        )
 }

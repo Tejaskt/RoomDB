@@ -3,6 +3,7 @@ package com.example.roomdb.presentation.screen.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.roomdb.data.local.entity.User
+import com.example.roomdb.data.repository.AuthRepository
 import com.example.roomdb.data.repository.UserRepository
 import com.example.roomdb.presentation.screen.dashboard.component.UiEvent
 import com.example.roomdb.presentation.utils.UiState
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val repository: UserRepository,
+    private val authRepository: AuthRepository
 //    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -97,6 +99,12 @@ class DashboardViewModel @Inject constructor(
     fun undoDelete(user: User) {
         viewModelScope.launch {
             repository.insertUser(user)
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
         }
     }
 }

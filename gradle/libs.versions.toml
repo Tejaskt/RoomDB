@@ -24,6 +24,7 @@ constraintlayout = "2.2.1"
 material3 = "1.4.0"
 firebaseAuth = "24.0.1"
 runtimeVersion = "1.10.1"
+firebaseFirestore = "26.1.0"
 
 
 [libraries]
@@ -61,6 +62,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtimeVersion" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 
 [plugins]
