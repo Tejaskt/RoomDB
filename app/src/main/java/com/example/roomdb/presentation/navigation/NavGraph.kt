@@ -24,26 +24,21 @@ fun AppNavGraph(
     splashVM: SplashViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
+
     val splashState by splashVM.splashState.collectAsState()
 
     LaunchedEffect(splashState) {
         when (splashState) {
             SplashState.Authenticated -> {
-                if (navController.currentDestination?.route == Routes.AUTH) {
-                    navController.navigate(Routes.DASHBOARD) {
-                        popUpTo(Routes.AUTH) { inclusive = true }
-                    }
+                navController.navigate(Routes.DASHBOARD) {
+                    popUpTo(Routes.SPLASH) { inclusive = true }
                 }
             }
-
             SplashState.Unauthenticated -> {
-                if (navController.currentDestination?.route != Routes.AUTH) {
-                    navController.navigate(Routes.AUTH) {
-                        popUpTo(0) { inclusive = true }
-                    }
+                navController.navigate(Routes.AUTH) {
+                    popUpTo(Routes.SPLASH) { inclusive = true }
                 }
             }
-
             SplashState.Loading -> Unit
         }
     }

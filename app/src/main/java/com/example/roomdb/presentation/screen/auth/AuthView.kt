@@ -24,7 +24,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,13 +37,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.roomdb.presentation.screen.addEditUser.FormTextField
 import com.example.roomdb.presentation.screen.auth.component.AuthMode
 import com.example.roomdb.presentation.screen.auth.component.AuthUiState
+import com.example.roomdb.presentation.utils.FormTextField
 import com.example.roomdb.ui.theme.App_Button
 
 @Composable
@@ -105,7 +103,7 @@ fun AuthView(
                     Text(
                         text = if (mode == AuthMode.LOGIN) "Welcome Back" else "Create Account",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
 

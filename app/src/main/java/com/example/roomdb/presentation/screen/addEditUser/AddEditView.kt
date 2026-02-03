@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.roomdb.presentation.screen.addEditUser.component.AddEditMode
 import com.example.roomdb.presentation.utils.AppScaffold
 import com.example.roomdb.presentation.utils.AppTopBar
+import com.example.roomdb.presentation.utils.FormTextField
 import com.example.roomdb.ui.theme.App_Button
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -163,55 +164,5 @@ fun AddEditView(
                   }
             }
         }
-    }
-}
-
-@Composable
-fun FormTextField(
-    label: String,
-    value: String,
-    placeholder: String,
-    error: String? = null,
-    onValueChange: (String) -> Unit,
-    isPasswordField : Boolean = false
-) {
-    Column {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelLarge
-        )
-
-        Spacer(modifier = Modifier.height(6.dp))
-
-        if (isPasswordField){
-            OutlinedTextField(
-                value = value,
-                onValueChange = onValueChange,
-                placeholder = { Text(placeholder) },
-                isError = error != null,
-                shape = RoundedCornerShape(14.dp),
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 1,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            )
-        }else {
-            OutlinedTextField(
-                value = value,
-                onValueChange = onValueChange,
-                placeholder = { Text(placeholder) },
-                isError = error != null,
-                shape = RoundedCornerShape(14.dp),
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 1
-            )
-        }
-
-        error?.let {
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = it, color = MaterialTheme.colorScheme.error)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }

@@ -15,6 +15,11 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
     override fun observeAuthState() = callbackFlow {
+
+        // Emit immediately (CRITICAL)
+        trySend(auth.currentUser != null)
+
+        // Listen for future changes
         val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             trySend(firebaseAuth.currentUser != null)
         }
