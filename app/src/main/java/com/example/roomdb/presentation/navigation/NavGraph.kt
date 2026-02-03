@@ -70,8 +70,12 @@ fun AppNavGraph(
                 onUserDetailsClick = { userId ->
                     navController.navigate("${Routes.USER_DETAIL}/$userId")
                 },
-                onEditUserClick = { userId ->
-                    navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId")
+                onEditUserClick = { user ->
+                    //navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId")
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("edit_user",user)
+                    navController.navigate(Routes.ADD_EDIT_USER)
                 },
                 onRemoteUsersClick = {
                     navController.navigate(Routes.REMOTE_USERS)

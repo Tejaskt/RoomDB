@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.data.repository.UserRepository
 import com.example.roomdb.presentation.screen.addEditUser.component.AddEditMode
 import com.example.roomdb.presentation.screen.addEditUser.component.AddEditUiEvent
@@ -24,19 +25,29 @@ import javax.inject.Inject
 class AddEditUserViewModel @Inject constructor(
     private val repository: UserRepository,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : ViewModel()
+{
 
+    private var editingUserId : Int? = null
+
+
+    /*
     /* ---------- USERID & MODE ---------- */
 
-    private val userId: Int = savedStateHandle["userId"] ?: -1
+     private val userId: Int = savedStateHandle["userId"] ?: -1
 
-    val mode: AddEditMode = if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
+     val mode: AddEditMode = if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
 
     init {
         if (mode == AddEditMode.EDIT) {
             loadUser()
         }
     }
+    */
+
+    val mode : AddEditMode
+        get() = if(editingUserId == null)
+            AddEditMode.ADD else AddEditMode.EDIT
 
     /* ---------- FORM STATE ---------- */
 
@@ -50,6 +61,7 @@ class AddEditUserViewModel @Inject constructor(
 
     /* ---------- LOAD USER ---------- */
 
+    /*
     private fun loadUser() {
         viewModelScope.launch {
             repository.getUserById(userId)
@@ -65,6 +77,22 @@ class AddEditUserViewModel @Inject constructor(
                 }
         }
     }
+    */
+
+    /** Called once from the screen */
+    fun init(user : User?){
+       if(user == null) return
+
+       editingUserId = user.id
+       _formState.value = UserFormState(
+           name = user.name,
+           email = user.email,
+           age = user.age.toString(),
+           college = user.college,
+           stream = user.stream
+
+       )
+    }
 
     /* ---------- SUBMIT USER TO DB ---------- */
 
@@ -76,10 +104,19 @@ class AddEditUserViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
+            /*
             if (mode == AddEditMode.ADD) {
                 repository.insertUser(validated.toUser())
             } else {
                 repository.updateUser(validated.toUser(userId))
+            }*/
+
+            if(editingUserId == null){
+                repository.insertUser(validated.toUser())
+            }else{
+                repository.updateUser(
+                    validated.toUser(editingUserId!!)
+                )
             }
             _uiEvent.emit(AddEditUiEvent.Success)
         }

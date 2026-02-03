@@ -60,33 +60,6 @@ class DashboardViewModel @Inject constructor(
                 0
             )
 
-    /* ---------- SELECTED USER (DETAIL SCREEN ONLY) ---------- */
-
-    /*
-    private val selectedUserId =
-        savedStateHandle.getStateFlow<Int?>("selected_user_id", null)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val selectedUserState: StateFlow<UiState<User>> =
-        selectedUserId
-            .filterNotNull()
-            .flatMapLatest { repository.getUserById(it) }  // Whenever userId changes, cancel the old DB query and start a new one.
-            .map { user ->
-                user?.let { UiState.Success(it) }
-                    ?: UiState.Error("User not found")
-            }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
-                UiState.Loading
-            )
-
-    fun selectUser(userId: Int) {
-        savedStateHandle["selected_user_id"] = userId
-    }
-    */
-
-
     /* ---------- DELETE ---------- */
 
     fun deleteUser(user: User) {
