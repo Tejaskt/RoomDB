@@ -39,7 +39,8 @@ fun SplashScreen() {
                 )
             ),
         contentAlignment = Alignment.Center
-    ) {
+    )
+    {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
