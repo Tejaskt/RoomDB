@@ -39,11 +39,12 @@ import com.example.roomdb.ui.theme.App_Button
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditView(
+    user: User?,
     onBack: () -> Unit,
     viewModel: AddEditUserViewModel = hiltViewModel()
 ) {
     val state by viewModel.formState.collectAsState()
-    val mode = viewModel.mode
+    val mode by viewModel.mode.collectAsState()
 
     //Navigation to dashboard after success
     LaunchedEffect(Unit) {
@@ -54,14 +55,9 @@ fun AddEditView(
 
     /*------------ CHANGES --------------*/
 
-    val savedStateHandle = LocalViewModelStoreOwner.current!!.savedStateHandle
 
-    val editUser = remember {
-        savedStateHandle.get<User>("edit_user")
-    }
-
-    LaunchedEffect(editUser) {
-        viewModel.init(editUser)
+    LaunchedEffect(user) {
+        viewModel.init(user)
     }
 
     AppScaffold(

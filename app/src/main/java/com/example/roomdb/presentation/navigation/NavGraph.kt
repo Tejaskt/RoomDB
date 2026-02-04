@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.roomdb.data.local.entity.User
 import com.example.roomdb.presentation.screen.addEditUser.AddEditView
 import com.example.roomdb.presentation.screen.auth.AuthView
 import com.example.roomdb.presentation.screen.dashboard.DashboardView
@@ -65,6 +66,9 @@ fun AppNavGraph(
         composable(Routes.DASHBOARD) {
             DashboardView(
                 onAddUserClick = {
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.remove<User>("user")
                     navController.navigate(Routes.ADD_EDIT_USER)
                 },
                 onUserDetailsClick = { userId ->
@@ -74,7 +78,7 @@ fun AppNavGraph(
                     //navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId")
                     navController.currentBackStackEntry
                         ?.savedStateHandle
-                        ?.set("edit_user",user)
+                        ?.set("user",user)
                     navController.navigate(Routes.ADD_EDIT_USER)
                 },
                 onRemoteUsersClick = {
@@ -83,16 +87,14 @@ fun AppNavGraph(
             )
         }
 
-        composable(
-            route = "${Routes.ADD_EDIT_USER}?userId={userId}",
-            arguments = listOf(
-                navArgument("userId") {
-                    type = NavType.IntType
-                    defaultValue = -1
-                }
-            )
-        ) {
+        composable(route = Routes.ADD_EDIT_USER) {
+
+            val user = navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.get<User>("user")
+
             AddEditView(
+                user = user,
                 onBack = {
                     navController.popBackStack(Routes.DASHBOARD, false)
                 }

@@ -67,7 +67,7 @@ fun DashboardView(
     viewModel: DashboardViewModel = hiltViewModel(),
     onAddUserClick: () -> Unit,
     onUserDetailsClick: (Int) -> Unit,
-    onEditUserClick: (Int) -> Unit,
+    onEditUserClick: (User) -> Unit,
     onRemoteUsersClick: () -> Unit, // for api fetch
 ) {
 
@@ -186,7 +186,7 @@ fun DashboardView(
                             UserCard(
                                 onUserClick = onUserDetailsClick,
                                 user = user,
-                                onEditUserClick = onEditUserClick,
+                                onEditUserClick = { onEditUserClick(user) },
                                 onDeleteUserClick = {
                                     viewModel.deleteUser(user)
                                 })
@@ -202,7 +202,7 @@ fun DashboardView(
 fun UserCard(
    onUserClick : (Int) -> Unit,
    user : User,
-   onEditUserClick: (Int) -> Unit,
+   onEditUserClick: (User) -> Unit,
    onDeleteUserClick: () -> Unit
 ) {
     Card(
@@ -248,7 +248,7 @@ fun UserCard(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            IconButton(onClick = {onEditUserClick(user.id)}) {
+            IconButton(onClick = {onEditUserClick(user)}) {
                 Icon(Icons.Default.Edit, contentDescription = "Edit", tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 

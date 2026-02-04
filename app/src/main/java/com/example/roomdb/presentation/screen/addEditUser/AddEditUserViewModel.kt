@@ -1,6 +1,7 @@
 package com.example.roomdb.presentation.screen.addEditUser
 
 import android.util.Patterns
+import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,9 +28,11 @@ class AddEditUserViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel()
 {
+    private val _mode = MutableStateFlow(AddEditMode.ADD)
+    val mode: StateFlow<AddEditMode> = _mode
 
+    private var isInitialized = false
     private var editingUserId : Int? = null
-
 
     /*
     /* ---------- USERID & MODE ---------- */
@@ -45,9 +48,9 @@ class AddEditUserViewModel @Inject constructor(
     }
     */
 
-    val mode : AddEditMode
-        get() = if(editingUserId == null)
-            AddEditMode.ADD else AddEditMode.EDIT
+//    val mode : AddEditMode
+//        get() = if(editingUserId == null)
+//            AddEditMode.ADD else AddEditMode.EDIT
 
     /* ---------- FORM STATE ---------- */
 
@@ -79,11 +82,18 @@ class AddEditUserViewModel @Inject constructor(
     }
     */
 
+
     /** Called once from the screen */
     fun init(user : User?){
-       if(user == null) return
+        if(user == null) return
+        if(editingUserId != null) return
 
-       editingUserId = user.id
+        //if(isInitialized) return
+
+       //isInitialized = true
+        editingUserId = user.id
+        _mode.value = AddEditMode.EDIT
+
        _formState.value = UserFormState(
            name = user.name,
            email = user.email,
