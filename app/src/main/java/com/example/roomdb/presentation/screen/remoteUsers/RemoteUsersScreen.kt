@@ -59,7 +59,7 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel = hiltViewModel()) {
                 subtitle = "Fetch From JsonPlaceholder Api",
                 icon = {
                     IconButton(
-                        onClick = {viewModel.deleteAll()}
+                        onClick = { viewModel.deleteAll() }
                     ) {
                         Icon(
                             Icons.Outlined.Delete,
@@ -110,6 +110,7 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel = hiltViewModel()) {
         }
 
         /* not to do this because sync in not ui state it's a network state so manage it differently.
+
         when(state){
             is UiState.Loading -> {
                 LoadingView()
@@ -125,7 +126,9 @@ fun RemoteUserScreen(viewModel: RemoteUsersViewModel = hiltViewModel()) {
                     users = (state as UiState.Success<List<RemoteUser>>).data
                 )
             }
-        } */
+        }
+
+        */
 
     }
 }

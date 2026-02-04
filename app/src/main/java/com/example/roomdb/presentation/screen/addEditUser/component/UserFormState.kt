@@ -16,10 +16,14 @@ data class UserFormState(
     val streamError: String? = null
 )
 
+
+/*--- Provide true when there is null field when ADD or EDIT action performed ---*/
 fun UserFormState.hasError(): Boolean =
     listOf(nameError, emailError, ageError, collegeError, streamError)
         .any { it != null }
 
+
+/*--- Convert UserFormState to User used when ADD or EDIT action performed ---*/
 fun UserFormState.toUser(id: Int = 0): User =
     User(
         id = id,

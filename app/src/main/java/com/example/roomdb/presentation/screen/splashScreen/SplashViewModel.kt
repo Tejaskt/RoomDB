@@ -15,6 +15,8 @@ class SplashViewModel @Inject constructor(
     authRepository: AuthRepository
 ) : ViewModel() {
 
+
+    /*------- CHECKS WHETHER USER IS LOGGED IN OR NOT -------*/
     val splashState = authRepository
         .observeAuthState()
         .map { isLoggedIn ->

@@ -16,7 +16,6 @@ interface RemoteUserDao {
     /* Server is source of truth
     *  API data overwrites local
     * */
-
     @Insert(onConflict = OnConflictStrategy.REPLACE) // Replace = sync-safe.
     suspend fun insertUsers(users : List<RemoteUserEntity>)
 

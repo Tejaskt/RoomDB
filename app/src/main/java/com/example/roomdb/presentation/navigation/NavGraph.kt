@@ -24,9 +24,12 @@ import com.example.roomdb.presentation.screen.splashScreen.component.SplashState
 fun AppNavGraph(
     splashVM: SplashViewModel = hiltViewModel()
 ) {
-    val navController = rememberNavController()
 
+    val navController = rememberNavController()
     val splashState by splashVM.splashState.collectAsState()
+
+
+    /* --------- LOGIN BYPASS LOGIC ---------- */
 
     LaunchedEffect(splashState) {
         when (splashState) {
@@ -49,10 +52,12 @@ fun AppNavGraph(
         startDestination = Routes.SPLASH
     ) {
 
+        /* ---------- SPLASH SCREEN ---------- */
         composable(Routes.SPLASH) {
             SplashScreen()
         }
 
+        /* ---------- AUTH SCREEN ---------- */
         composable(Routes.AUTH) {
             AuthView(
                 onNavigateToDashboard = {
@@ -63,6 +68,7 @@ fun AppNavGraph(
             )
         }
 
+        /* ---------- DASHBOARD SCREEN ---------- */
         composable(Routes.DASHBOARD) {
             DashboardView(
                 onAddUserClick = {
@@ -76,10 +82,13 @@ fun AppNavGraph(
                 },
                 onEditUserClick = { user ->
                     //navController.navigate("${Routes.ADD_EDIT_USER}?userId=$userId")
+
+                    // set user
                     navController.currentBackStackEntry
                         ?.savedStateHandle
                         ?.set("user",user)
                     navController.navigate(Routes.ADD_EDIT_USER)
+
                 },
                 onRemoteUsersClick = {
                     navController.navigate(Routes.REMOTE_USERS)
@@ -87,8 +96,10 @@ fun AppNavGraph(
             )
         }
 
-        composable(route = Routes.ADD_EDIT_USER) {
+        /* ---------- ADD-EDIT USER SCREEN ---------- */
+        composable(Routes.ADD_EDIT_USER) {
 
+            // get user
             val user = navController.previousBackStackEntry
                 ?.savedStateHandle
                 ?.get<User>("user")
@@ -101,6 +112,7 @@ fun AppNavGraph(
             )
         }
 
+        /* ---------- USER DETAILS SCREEN ---------- */
         composable(
             route = "${Routes.USER_DETAIL}/{userId}",
             arguments = listOf(
@@ -116,6 +128,7 @@ fun AppNavGraph(
             )
         }
 
+        /* ---------- FETCH API USER SCREEN ---------- */
         composable(Routes.REMOTE_USERS) {
             RemoteUserScreen()
         }

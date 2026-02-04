@@ -39,7 +39,7 @@ class RemoteUsersViewModel @Inject constructor (
       sync()
     }
 
-    /* ---------- Sync STATE ---------- */
+    /* ---------- DELETE RECORDS ---------- */
 
     fun deleteAll(){
         viewModelScope.launch {

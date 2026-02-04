@@ -28,29 +28,26 @@ class AddEditUserViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel()
 {
+
+    /* ---------- USERID & MODE ---------- */
     private val _mode = MutableStateFlow(AddEditMode.ADD)
     val mode: StateFlow<AddEditMode> = _mode
-
-    private var isInitialized = false
     private var editingUserId : Int? = null
 
     /*
-    /* ---------- USERID & MODE ---------- */
 
      private val userId: Int = savedStateHandle["userId"] ?: -1
-
      val mode: AddEditMode = if (userId == -1) AddEditMode.ADD else AddEditMode.EDIT
 
-    init {
+     init {
         if (mode == AddEditMode.EDIT) {
             loadUser()
         }
-    }
-    */
+     }
 
-//    val mode : AddEditMode
-//        get() = if(editingUserId == null)
-//            AddEditMode.ADD else AddEditMode.EDIT
+    val mode : AddEditMode
+        get() = if(editingUserId == null) AddEditMode.ADD else AddEditMode.EDIT
+    */
 
     /* ---------- FORM STATE ---------- */
 
@@ -85,12 +82,10 @@ class AddEditUserViewModel @Inject constructor(
 
     /** Called once from the screen */
     fun init(user : User?){
+
         if(user == null) return
         if(editingUserId != null) return
 
-        //if(isInitialized) return
-
-       //isInitialized = true
         editingUserId = user.id
         _mode.value = AddEditMode.EDIT
 
@@ -114,12 +109,6 @@ class AddEditUserViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            /*
-            if (mode == AddEditMode.ADD) {
-                repository.insertUser(validated.toUser())
-            } else {
-                repository.updateUser(validated.toUser(userId))
-            }*/
 
             if(editingUserId == null){
                 repository.insertUser(validated.toUser())

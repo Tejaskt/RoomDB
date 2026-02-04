@@ -8,7 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
     private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 
-
     /* logging interceptor
     *  it logs http traffic into logcat
     *  can read and modify the response and request.
@@ -23,7 +22,6 @@ object RetrofitClient {
         * */
     }
 
-
     /*  OkHttpClient
     * request execution engine
     * it handles connection, timeout, retries, interceptor, headers
@@ -31,7 +29,6 @@ object RetrofitClient {
     private val client = OkHttpClient.Builder()
         .addInterceptor(logging)
         .build()
-
 
     /* Retrofit api
     * Create Request description

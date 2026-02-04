@@ -43,6 +43,7 @@ fun AddEditView(
     onBack: () -> Unit,
     viewModel: AddEditUserViewModel = hiltViewModel()
 ) {
+
     val state by viewModel.formState.collectAsState()
     val mode by viewModel.mode.collectAsState()
 
@@ -52,9 +53,6 @@ fun AddEditView(
             onBack()
         }
     }
-
-    /*------------ CHANGES --------------*/
-
 
     LaunchedEffect(user) {
         viewModel.init(user)
